@@ -1,23 +1,27 @@
 package com.griddynamics.weather_sample_app.screens.splash
 
+import android.content.res.Configuration
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
-import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
-import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.navigation.NavHostController
 import com.griddynamics.weather_sample_app.screens.Screen
+import com.griddynamics.weather_sample_app.ui.theme.WeatherComposeTheme
+import com.griddynamics.weather_sample_app.ui.theme.lombokFontFamily
+import com.griddynamics.weather_sample_app.ui.theme.textSecondary
 import com.griddynamics.weather_sample_app.utils.getSeasonalSplashData
+import com.griddynamics.weather_sample_app.widgets.WavesBackground
 import kotlinx.coroutines.delay
 
 @Composable
@@ -25,14 +29,14 @@ fun AnimatedSplashScreen(navigation: NavHostController) {
     var startAnimation by remember { mutableStateOf(false) }
     val alphaAnim = animateFloatAsState(
         targetValue = if (startAnimation) 1f else 0f,
-        animationSpec = tween(1000)
+        animationSpec = tween(1500)
     )
 
     LaunchedEffect(key1 = true) {
         startAnimation = true
-        delay(1000)
+        delay(1500)
         navigation.popBackStack()
-        navigation.navigate(Screen.WeathersList.value)
+        navigation.navigate(Screen.CurrentCityWeather.value)
     }
     SplashScreen(alphaAnim.value)
 }
@@ -40,36 +44,46 @@ fun AnimatedSplashScreen(navigation: NavHostController) {
 @Composable
 fun SplashScreen(alpha: Float = 1f) {
     val seasonData = getSeasonalSplashData()
-    ConstraintLayout(
-        modifier = Modifier
-            .fillMaxSize()
-            .alpha(alpha),
-    ) {
-        val (text) = createRefs()
 
-        Image(
-            painter = painterResource(id = seasonData.image),
-            modifier = Modifier.fillMaxSize(),
-            contentDescription = "Splash image",
-            contentScale = ContentScale.Crop
-        )
-        Text(
+    WeatherComposeTheme {
+        ConstraintLayout(
             modifier = Modifier
-                .padding(bottom = 128.dp)
-                .constrainAs(text) {
-                    start.linkTo(parent.start)
-                    end.linkTo(parent.end)
-                    top.linkTo(parent.top)
-                    bottom.linkTo(parent.bottom)
-                },
-            text = "Compose Weather",
-            color = seasonData.textColor,
-            fontSize = 32.sp
-        )
+                .fillMaxSize()
+                .background(MaterialTheme.colors.background)
+                .alpha(alpha),
+        ) {
+            val (textMain) = createRefs()
+
+            Text(
+                modifier = Modifier
+                    .padding(bottom = 128.dp)
+                    .constrainAs(textMain) {
+                        start.linkTo(parent.start)
+                        end.linkTo(parent.end)
+                        top.linkTo(parent.top)
+                        bottom.linkTo(parent.bottom)
+                    },
+                text = "Compose Weather",
+                color = MaterialTheme.colors.textSecondary,
+                fontSize = 32.sp,
+                fontFamily = lombokFontFamily
+            )
+
+            WavesBackground(seasonData.wave1Color, seasonData.wave2Color)
+        }
     }
 }
 
-@Preview()
+@Preview(
+    showBackground = true,
+    name = "Light mode",
+    uiMode = Configuration.UI_MODE_NIGHT_NO
+)
+@Preview(
+    showBackground = true,
+    name = "Night mode",
+    uiMode = Configuration.UI_MODE_NIGHT_YES
+)
 @Composable
 fun SplashPreview() {
     SplashScreen()
