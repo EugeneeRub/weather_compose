@@ -10,8 +10,9 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.griddynamics.weather_sample_app.screens.Screen.*
+import com.griddynamics.weather_sample_app.screens.main.MainScreen
 import com.griddynamics.weather_sample_app.screens.splash.AnimatedSplashScreen
-import com.griddynamics.weather_sample_app.screens.currentCityWeather.CurrentCityWeatherScreen
+import com.griddynamics.weather_sample_app.screens.main.currentCityWeather.CurrentCityWeatherScreen
 
 @ExperimentalMaterialApi
 class MainActivity : ComponentActivity() {
@@ -32,11 +33,11 @@ fun Navigation() {
         navController = navController, startDestination = Splash.value
     ) {
         composable(Splash.value) { AnimatedSplashScreen(navController) }
-        composable(CurrentCityWeather.value) { CurrentCityWeatherScreen() }
+        composable(Main.value) { MainScreen() }
     }
 }
 
 sealed class Screen(val value: String) {
     object Splash : Screen("splash_screen")
-    object CurrentCityWeather : Screen("current_city_weather_screen")
+    object Main : Screen("main_screen")
 }

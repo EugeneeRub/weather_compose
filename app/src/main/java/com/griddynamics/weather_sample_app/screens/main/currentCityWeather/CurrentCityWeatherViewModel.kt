@@ -1,4 +1,4 @@
-package com.griddynamics.weather_sample_app.screens.currentCityWeather
+package com.griddynamics.weather_sample_app.screens.main.currentCityWeather
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

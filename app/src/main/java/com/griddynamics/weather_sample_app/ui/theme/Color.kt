@@ -9,6 +9,7 @@ sealed class BaseThemeColors(
     val background: Color,
     val textPrimary: Color,
     val textSecondary: Color,
+    val viewSelected: Color
 )
 
 object LightColors : BaseThemeColors(
@@ -16,7 +17,8 @@ object LightColors : BaseThemeColors(
     secondary = Color(0xFF70c9e2),
     background = Color(0xFFFFFFFF),
     textPrimary = Color(0XFF2E2E2E),
-    textSecondary = Color(0XFFEDEDED),
+    textSecondary = Color(0xFF3A3A3A),
+    viewSelected = Color(0xFFF3F3F3)
 )
 
 object DarkColors : BaseThemeColors(
@@ -25,6 +27,7 @@ object DarkColors : BaseThemeColors(
     background = Color(0XFF3B444B),
     textPrimary = Color(0XFFE3E3E3),
     textSecondary = Color(0XFFEDEDED),
+    viewSelected = Color(0xFF4A5258)
 )
 
 val Colors.textPrimary: Color
@@ -32,3 +35,6 @@ val Colors.textPrimary: Color
 
 val Colors.textSecondary: Color
     get() = if (isLight) LightColors.textSecondary else DarkColors.textSecondary
+
+val Colors.viewSelected: Color
+    get() = if (isLight) LightColors.viewSelected else DarkColors.viewSelected
