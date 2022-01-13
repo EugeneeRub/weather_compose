@@ -2,17 +2,11 @@ package com.griddynamics.weather_sample_app.screens.main.currentCityWeather
 
 import android.content.res.Configuration
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.Card
-import androidx.compose.material.icons.rounded.Menu
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.State
 import androidx.compose.runtime.livedata.observeAsState
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -26,16 +20,12 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.griddynamics.weather_sample_app.ui.theme.WeatherComposeTheme
 import com.griddynamics.weather_sample_app.ui.theme.textPrimary
 import com.griddynamics.weather_sample_app.ui.theme.textSecondary
-import com.griddynamics.weather_sample_app.utils.seasonalMainData
+import com.griddynamics.weather_sample_app.utils.seasonMainData
 import com.griddynamics.weather_sample_app.widgets.WavesBackground
-import kotlinx.coroutines.launch
 
 @Composable
-fun CurrentCityWeatherScreen(
-    drawerState: DrawerState, viewModel: CurrentCityWeatherViewModel = viewModel()
-) {
-    val seasonData = seasonalMainData
-    val scope = rememberCoroutineScope()
+fun CurrentCityWeatherScreen(viewModel: CurrentCityWeatherViewModel = viewModel()) {
+    val seasonData = seasonMainData
 
     WeatherComposeTheme {
         Box(
@@ -44,27 +34,6 @@ fun CurrentCityWeatherScreen(
                 .background(MaterialTheme.colors.background)
         ) {
             WavesBackground(seasonData.wave1Color, seasonData.wave2Color)
-            Card(
-                backgroundColor = seasonData.wave1Color,
-                shape = RoundedCornerShape(topStart = 12.dp, bottomStart = 12.dp),
-                modifier = Modifier
-                    .padding(top = 56.dp)
-                    .align(Alignment.TopEnd)
-                    .clickable {
-                        scope.launch {
-                            drawerState.open()
-                        }
-                    },
-            ) {
-                Icon(
-                    Icons.Rounded.Menu,
-                    tint = Color.White,
-                    contentDescription = "",
-                    modifier = Modifier
-                        .padding(12.dp)
-                        .size(28.dp)
-                )
-            }
 
             Column(
                 modifier = Modifier.fillMaxSize(),
@@ -153,5 +122,5 @@ fun ShowWeatherIconType(icon: State<Int?>) {
 )
 @Composable
 fun WeathersListPreview() {
-    CurrentCityWeatherScreen(DrawerState(DrawerValue.Closed))
+    CurrentCityWeatherScreen()
 }

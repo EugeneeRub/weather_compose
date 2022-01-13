@@ -1,6 +1,7 @@
 package com.griddynamics.weather_sample_app.widgets
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -12,36 +13,72 @@ import androidx.compose.material.icons.rounded.Home
 import androidx.compose.material.icons.rounded.Settings
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.constraintlayout.compose.ConstraintLayout
+import androidx.constraintlayout.compose.Dimension
 import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
+import androidx.navigation.compose.rememberNavController
+import com.griddynamics.weather_sample_app.ui.theme.lombokFontFamily
 import com.griddynamics.weather_sample_app.ui.theme.textSecondary
 import com.griddynamics.weather_sample_app.ui.theme.viewSelected
-import com.griddynamics.weather_sample_app.utils.seasonalMainData
+import com.griddynamics.weather_sample_app.utils.seasonMainData
 import kotlinx.coroutines.CoroutineScope
 
 @Composable
-fun WeatherDrawer(modifier: Modifier, scope: CoroutineScope, navController: NavController) {
+fun WeatherDrawer(modifier: Modifier, navController: NavController) {
     val items = listOf(
         NavDrawerItem.Home,
         NavDrawerItem.Settings,
     )
-    Column(
-        modifier = modifier
+    ConstraintLayout(
+        modifier = modifier.fillMaxSize()
     ) {
-        Spacer(
-            modifier = Modifier.weight(0.5f)
-        )
+        val (header, mainContent, devContent) = createRefs()
+
+        Box(
+            modifier = Modifier
+                .constrainAs(header) {
+                    start.linkTo(parent.start)
+                    end.linkTo(parent.end)
+                    top.linkTo(parent.top)
+
+                    width = Dimension.fillToConstraints
+                    height = Dimension.value(120.dp)
+                },
+            contentAlignment = Alignment.Center
+        ) {
+            Text(
+                "CW",
+                fontFamily = lombokFontFamily,
+                fontSize = 44.sp,
+            )
+        }
+
         Column(
             modifier = Modifier
-                .weight(4f)
-                .fillMaxWidth(),
+                .constrainAs(mainContent) {
+                    top.linkTo(header.bottom)
+                    start.linkTo(parent.start)
+                    end.linkTo(parent.end)
+                    bottom.linkTo(devContent.top)
+
+                    // works like:
+                    // android:layout_width="0dp"
+                    // android:layout_height="0dp"
+                    //
+                    width = Dimension.fillToConstraints
+                    height = Dimension.fillToConstraints
+                },
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             val navBackStackEntry by navController.currentBackStackEntryAsState()
@@ -60,10 +97,18 @@ fun WeatherDrawer(modifier: Modifier, scope: CoroutineScope, navController: NavC
                 }
             }
         }
+
         Column(
             modifier = Modifier
-                .fillMaxWidth()
-                .weight(0.5f),
+                .constrainAs(devContent) {
+                    start.linkTo(parent.start)
+                    end.linkTo(parent.end)
+                    bottom.linkTo(parent.bottom)
+
+                    width = Dimension.fillToConstraints
+                    height = Dimension.value(120.dp)
+                }
+                .padding(vertical = 8.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
@@ -84,7 +129,7 @@ fun WeatherDrawer(modifier: Modifier, scope: CoroutineScope, navController: NavC
 fun WeatherDrawerItem(
     item: NavDrawerItem, selected: Boolean, onItemClick: (NavDrawerItem) -> Unit
 ) {
-    val seasonWave2Color = seasonalMainData.wave2Color
+    val seasonWave2Color = seasonMainData.wave2Color
     val backgroundCardColor =
         if (selected) MaterialTheme.colors.viewSelected else MaterialTheme.colors.background
     val textColor = if (selected) seasonWave2Color else MaterialTheme.colors.textSecondary
@@ -132,4 +177,13 @@ sealed class NavDrawerItem(val route: String, val icon: ImageVector, val title: 
 @Composable
 fun DrawerItemPreview() {
     WeatherDrawerItem(item = NavDrawerItem.Home, selected = false, onItemClick = {})
+}
+
+@Preview(
+    showBackground = false,
+    name = "Weather drawer"
+)
+@Composable
+fun DrawerPreview() {
+    WeatherDrawer(Modifier, rememberNavController())
 }

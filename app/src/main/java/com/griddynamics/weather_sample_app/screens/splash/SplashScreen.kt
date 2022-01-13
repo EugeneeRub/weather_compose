@@ -20,7 +20,7 @@ import com.griddynamics.weather_sample_app.screens.Screen
 import com.griddynamics.weather_sample_app.ui.theme.WeatherComposeTheme
 import com.griddynamics.weather_sample_app.ui.theme.lombokFontFamily
 import com.griddynamics.weather_sample_app.ui.theme.textSecondary
-import com.griddynamics.weather_sample_app.utils.seasonalMainData
+import com.griddynamics.weather_sample_app.utils.seasonMainData
 import com.griddynamics.weather_sample_app.widgets.WavesBackground
 import kotlinx.coroutines.delay
 
@@ -43,7 +43,7 @@ fun AnimatedSplashScreen(navigation: NavHostController) {
 
 @Composable
 fun SplashScreen(alpha: Float = 1f) {
-    val seasonData = seasonalMainData
+    val seasonData = seasonMainData
 
     WeatherComposeTheme {
         ConstraintLayout(

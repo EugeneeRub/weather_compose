@@ -21,11 +21,14 @@
         <entry key="../../../../layout/compose-model-1642001297214.xml" value="0.1" />
         <entry key="../../../../layout/compose-model-1642002396380.xml" value="0.25" />
         <entry key="../../../../layout/compose-model-1642003964594.xml" value="0.12479935794542536" />
+        <entry key="../../../../layout/compose-model-1642076144978.xml" value="0.165" />
         <entry key="app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.141" />
         <entry key="app/src/main/res/drawable/background_wave_1.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/background_wave_2.xml" value="0.154" />
         <entry key="app/src/main/res/drawable/ic_background_wave_1.xml" value="0.134" />
         <entry key="app/src/main/res/drawable/ic_background_wave_2.xml" value="0.134" />
+        <entry key="app/src/main/res/drawable/ic_celsius.xml" value="0.1" />
+        <entry key="app/src/main/res/drawable/ic_fahrenheit.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/ic_launcher_background.xml" value="0.133" />
         <entry key="app/src/main/res/drawable/ic_menu.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/ic_nighttime.xml" value="0.1" />
@@ -43,7 +46,9 @@
         <entry key="app/src/main/res/drawable/ic_storm.xml" value="0.141" />
         <entry key="app/src/main/res/drawable/ic_sunny.xml" value="0.141" />
         <entry key="app/src/main/res/drawable/ic_sunny_windy.xml" value="0.141" />
+        <entry key="app/src/main/res/drawable/ic_temperature.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/ic_thunder.xml" value="0.141" />
+        <entry key="app/src/main/res/drawable/ic_translate.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/ic_wet.xml" value="0.141" />
         <entry key="app/src/main/res/drawable/ic_windy.xml" value="0.141" />
         <entry key="app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.141" />
