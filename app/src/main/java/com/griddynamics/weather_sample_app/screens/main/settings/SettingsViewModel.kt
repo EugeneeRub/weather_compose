@@ -27,22 +27,10 @@ class SettingsViewModel(application: Application) : BaseViewModel(application) {
     }
 
     fun updateLocale(language: Language) {
-        setLanguageCode(language.code)
-        setLocale(language)
         _selectedLanguage.value = language
     }
 
     fun updateTemperatureType(tempType: TemperatureType) {
-        setTemperatureType(tempType.type)
         _selectedTemperatureType.value = tempType
-    }
-
-    private fun setLocale(language: Language) {
-        val locale = Locale(language.code)
-        Locale.setDefault(locale)
-        val resources: Resources = getApplication<Application>().resources
-        val config: Configuration = resources.configuration
-        config.setLocale(locale)
-        resources.updateConfiguration(config, resources.displayMetrics)
     }
 }

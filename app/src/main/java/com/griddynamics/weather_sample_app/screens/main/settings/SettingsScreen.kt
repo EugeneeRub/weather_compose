@@ -1,6 +1,5 @@
 package com.griddynamics.weather_sample_app.screens.main.settings
 
-import android.graphics.drawable.Icon
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -9,15 +8,14 @@ import androidx.compose.material.Card
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.Place
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.State
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ColorFilter
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
@@ -27,6 +25,8 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.griddynamics.weather_sample_app.R
 import com.griddynamics.weather_sample_app.screens.data.model.settings.Language
 import com.griddynamics.weather_sample_app.screens.data.model.settings.TemperatureType
+import com.griddynamics.weather_sample_app.screens.main.settings.language.LanguageDialog
+import com.griddynamics.weather_sample_app.screens.main.settings.temperature.TemperatureDialog
 import com.griddynamics.weather_sample_app.ui.theme.WeatherComposeTheme
 import com.griddynamics.weather_sample_app.ui.theme.textPrimary
 import com.griddynamics.weather_sample_app.ui.theme.textSecondary
@@ -36,6 +36,9 @@ import com.griddynamics.weather_sample_app.utils.seasonMainData
 @ExperimentalMaterialApi
 @Composable
 fun SettingsScreen(viewModel: SettingsViewModel = viewModel()) {
+    val (isShowLanguageDialog, setLanguageDialog) = remember { mutableStateOf(false) }
+    val (isShowTemperatureDialog, setTemperatureDialog) = remember { mutableStateOf(false) }
+
     WeatherComposeTheme {
         Column(
             modifier = Modifier
@@ -52,12 +55,22 @@ fun SettingsScreen(viewModel: SettingsViewModel = viewModel()) {
             )
             Spacer(modifier = Modifier.padding(top = 64.dp))
             ShowLanguageView(viewModel.selectedLanguage.observeAsState()) {
-
+                setLanguageDialog(true)
             }
             ShowTemperatureTypeView(viewModel.selectedTemperatureType.observeAsState()) {
-
+                setTemperatureDialog(true)
             }
         }
+        LanguageDialog(
+            isShowDialog = isShowLanguageDialog,
+            setShowDialog = setLanguageDialog,
+            onLanguageSelected = viewModel::updateLocale
+        )
+        TemperatureDialog(
+            isShowDialog = isShowTemperatureDialog,
+            setShowDialog = setTemperatureDialog,
+            onTemperatureSelected = viewModel::updateTemperatureType
+        )
     }
 }
 
@@ -99,7 +112,7 @@ fun ShowLanguageView(languageState: State<Language?>, onClick: () -> Unit) {
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Text(
-                    text = "Language",
+                    text = stringResource(id = R.string.language),
                     color = MaterialTheme.colors.textPrimary
                 )
                 Text(
@@ -150,7 +163,7 @@ fun ShowTemperatureTypeView(temperatureTypeState: State<TemperatureType?>, onCli
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Text(
-                    text = "Temperature",
+                    text = stringResource(id = R.string.temperature),
                     color = MaterialTheme.colors.textPrimary
                 )
                 Image(

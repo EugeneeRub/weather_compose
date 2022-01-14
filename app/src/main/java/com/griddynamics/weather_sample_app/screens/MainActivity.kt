@@ -12,7 +12,6 @@ import androidx.navigation.compose.rememberNavController
 import com.griddynamics.weather_sample_app.screens.Screen.*
 import com.griddynamics.weather_sample_app.screens.main.MainScreen
 import com.griddynamics.weather_sample_app.screens.splash.AnimatedSplashScreen
-import com.griddynamics.weather_sample_app.screens.main.currentCityWeather.CurrentCityWeatherScreen
 
 @ExperimentalMaterialApi
 class MainActivity : ComponentActivity() {

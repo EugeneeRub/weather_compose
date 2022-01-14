@@ -16,9 +16,11 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -33,7 +35,9 @@ import kotlinx.coroutines.launch
 
 @ExperimentalMaterialApi
 @Composable
-fun MainScreen() {
+fun MainScreen(viewModel: MainViewModel = viewModel()) {
+    viewModel.updateLocale(LocalContext.current)
+
     val navController = rememberNavController()
 
     WeatherComposeTheme {
@@ -112,10 +116,10 @@ private fun SetupDrawerMenu(
 private fun Navigation(navController: NavHostController, drawerState: DrawerState) {
     NavHost(navController, startDestination = NavDrawerItem.Home.route) {
         composable(NavDrawerItem.Home.route) {
-            SettingsScreen()
+            CurrentCityWeatherScreen()
         }
         composable(NavDrawerItem.Settings.route) {
-            CurrentCityWeatherScreen()
+            SettingsScreen()
         }
     }
 }

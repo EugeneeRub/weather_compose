@@ -1,13 +1,16 @@
 package com.griddynamics.weather_sample_app.screens.main.currentCityWeather
 
+import android.app.Application
+import androidx.compose.ui.text.toLowerCase
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.griddynamics.weather_sample_app.R
+import com.griddynamics.weather_sample_app.screens.base.BaseViewModel
 import java.text.SimpleDateFormat
 import java.util.*
 
-class CurrentCityWeatherViewModel : ViewModel() {
+class CurrentCityWeatherViewModel(application: Application) : BaseViewModel(application) {
 
     private val _currentDay = MutableLiveData<String>()
     val currentDay: LiveData<String>
@@ -30,8 +33,10 @@ class CurrentCityWeatherViewModel : ViewModel() {
         get() = _currentWeatherIcon
 
     init {
-        _currentDay.value =
-            SimpleDateFormat("EEEE", Locale.ENGLISH).format(Calendar.getInstance().time)
+        val day = SimpleDateFormat(
+            "EEEE", Locale(getLanguageCode().lowercase())
+        ).format(Calendar.getInstance().time)
+        _currentDay.value = day
         _currentTemperature.value = "23"
         _currentCity.value = "Kharkiv"
         _lastUpdatedTime.value = "14:20"
