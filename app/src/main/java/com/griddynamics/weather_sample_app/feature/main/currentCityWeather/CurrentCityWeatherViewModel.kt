@@ -1,18 +1,16 @@
 package com.griddynamics.weather_sample_app.feature.main.currentCityWeather
 
 import android.Manifest
-import android.annotation.SuppressLint
 import android.app.Application
 import android.content.Context
 import android.content.pm.PackageManager
-import android.location.LocationManager
 import androidx.core.app.ActivityCompat
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.google.android.gms.location.LocationServices
 import com.griddynamics.weather_sample_app.R
-import com.griddynamics.weather_sample_app.core.extension.toStringTemperature
+import com.griddynamics.weather_sample_app.core.extension.kelvinToTemperatureType
 import com.griddynamics.weather_sample_app.core.extension.toStringTime
 import com.griddynamics.weather_sample_app.core.platfrom.BaseViewModel
 import com.griddynamics.weather_sample_app.core.platfrom.RepositoryResponse
@@ -52,8 +50,6 @@ class CurrentCityWeatherViewModel(application: Application) : BaseViewModel(appl
             "EEEE", Locale(getLanguageCode().lowercase())
         ).format(Calendar.getInstance().time)
         _currentDay.value = day
-
-        loadWeatherIconType()
     }
 
     fun loadWeather(context: Context) {
@@ -78,9 +74,13 @@ class CurrentCityWeatherViewModel(application: Application) : BaseViewModel(appl
             when (it) {
                 is RepositoryResponse.Result -> {
                     it.result.let { value ->
-                        _currentTemperature.value = value.main.temp.toStringTemperature()
-                        _currentCity.value = "City"
+                        _currentTemperature.value =
+                            value.main.temp.kelvinToTemperatureType(getTemperatureType())
+                        _currentCity.value = value.cityName
                         _lastUpdatedTime.value = Calendar.getInstance().time.toStringTime()
+                        value.weather.firstOrNull()?.let { weather ->
+                            loadWeatherIconType(weather.icon)
+                        }
                     }
                 }
                 is RepositoryResponse.Error -> {
@@ -90,27 +90,24 @@ class CurrentCityWeatherViewModel(application: Application) : BaseViewModel(appl
         }
     }
 
-    private fun loadWeatherIconType() {
-        val loadedType = Random().nextInt(18)
-        _currentWeatherIcon.value = when (loadedType) {
-            1 -> R.drawable.ic_nighttime
-            2 -> R.drawable.ic_nighttime_windy
-            3 -> R.drawable.ic_occasional_showers
-            4 -> R.drawable.ic_overcast
-            5 -> R.drawable.ic_partly_nighttime
-            6 -> R.drawable.ic_partly_showers_nighttime
-            7 -> R.drawable.ic_partly_snow
-            8 -> R.drawable.ic_partly_sunny
-            9 -> R.drawable.ic_partly_thunder_nighttime
-            10 -> R.drawable.ic_partly_thunder_sunny
-            11 -> R.drawable.ic_rain
-            12 -> R.drawable.ic_snow
-            13 -> R.drawable.ic_storm
-            14 -> R.drawable.ic_sunny
-            15 -> R.drawable.ic_sunny_windy
-            16 -> R.drawable.ic_thunder
-            17 -> R.drawable.ic_wet
-            18 -> R.drawable.ic_windy
+    private fun loadWeatherIconType(iconId: String) {
+        _currentWeatherIcon.value = when (iconId) {
+            "01d" -> R.drawable.ic_sunny
+            "01n" -> R.drawable.ic_nighttime
+            "02d" -> R.drawable.ic_partly_sunny
+            "02n" -> R.drawable.ic_partly_nighttime
+            "03d", "03n", "04d", "04n" -> R.drawable.ic_overcast
+            "09d", "09n" -> R.drawable.ic_rain
+            "10d" -> R.drawable.ic_occasional_showers
+            "10n" -> R.drawable.ic_partly_showers_nighttime
+            "11d" -> R.drawable.ic_partly_thunder_sunny
+            "11n" -> R.drawable.ic_partly_thunder_nighttime
+            "13d", "13n" -> R.drawable.ic_snow
+//            13 -> R.drawable.ic_storm
+//            15 -> R.drawable.ic_sunny_windy
+//            16 -> R.drawable.ic_thunder
+//            17 -> R.drawable.ic_wet
+//            18 -> R.drawable.ic_windy
             else -> R.drawable.ic_sunny
         }
 
