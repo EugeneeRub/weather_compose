@@ -24,12 +24,14 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.griddynamics.weather_sample_app.feature.main.currentCityWeather.CurrentCityWeatherScreen
+import com.google.accompanist.pager.ExperimentalPagerApi
+import com.griddynamics.weather_sample_app.feature.main.currentCityWeather.CurrentCityWeather
 import com.griddynamics.weather_sample_app.feature.main.settings.SettingsScreen
 import com.griddynamics.weather_sample_app.feature.ui.theme.WeatherComposeTheme
 import com.griddynamics.weather_sample_app.feature.splash.util.seasonMainData
 import kotlinx.coroutines.launch
 
+@ExperimentalPagerApi
 @ExperimentalMaterialApi
 @Composable
 fun MainScreen(viewModel: MainViewModel = viewModel()) {
@@ -108,12 +110,13 @@ private fun SetupDrawerMenu(
     }
 }
 
+@ExperimentalPagerApi
 @ExperimentalMaterialApi
 @Composable
 private fun Navigation(navController: NavHostController, drawerState: DrawerState) {
     NavHost(navController, startDestination = NavDrawerItem.Home.route) {
         composable(NavDrawerItem.Home.route) {
-            CurrentCityWeatherScreen()
+            CurrentCityWeather()
         }
         composable(NavDrawerItem.Settings.route) {
             SettingsScreen()

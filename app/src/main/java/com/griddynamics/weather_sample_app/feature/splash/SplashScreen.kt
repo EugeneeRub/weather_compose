@@ -1,4 +1,4 @@
-package com.griddynamics.weather_sample_app.screens.splash
+package com.griddynamics.weather_sample_app.feature.splash
 
 import android.content.res.Configuration
 import androidx.compose.animation.core.animateFloatAsState
@@ -69,7 +69,7 @@ fun SplashScreen(alpha: Float = 1f) {
                 fontFamily = lombokFontFamily
             )
 
-            WavesBackground(seasonData.wave1Color, seasonData.wave2Color)
+            WavesBackground(seasonData.wave1Color)
         }
     }
 }

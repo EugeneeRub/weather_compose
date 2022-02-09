@@ -51,7 +51,8 @@ fun WeatherDrawer(modifier: Modifier, navController: NavController) {
 
                     width = Dimension.fillToConstraints
                     height = Dimension.value(120.dp)
-                },
+                }
+                .padding(top = 32.dp),
             contentAlignment = Alignment.Center
         ) {
             Text(

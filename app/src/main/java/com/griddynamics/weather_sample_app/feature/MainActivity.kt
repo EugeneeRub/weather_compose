@@ -9,10 +9,12 @@ import androidx.core.view.WindowCompat
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.google.accompanist.pager.ExperimentalPagerApi
 import com.griddynamics.weather_sample_app.feature.Screen.*
 import com.griddynamics.weather_sample_app.feature.main.MainScreen
-import com.griddynamics.weather_sample_app.screens.splash.AnimatedSplashScreen
+import com.griddynamics.weather_sample_app.feature.splash.AnimatedSplashScreen
 
+@ExperimentalPagerApi
 @ExperimentalMaterialApi
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -24,6 +26,7 @@ class MainActivity : ComponentActivity() {
     }
 }
 
+@ExperimentalPagerApi
 @ExperimentalMaterialApi
 @Composable
 fun Navigation() {
