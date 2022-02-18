@@ -1,17 +1,22 @@
 package com.griddynamics.weather_sample_app.feature.main
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.LocalIndication
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Home
 import androidx.compose.material.icons.rounded.Settings
+import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ColorFilter
@@ -26,12 +31,13 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.griddynamics.weather_sample_app.R
+import com.griddynamics.weather_sample_app.feature.splash.util.seasonMainData
 import com.griddynamics.weather_sample_app.feature.ui.theme.lombokFontFamily
 import com.griddynamics.weather_sample_app.feature.ui.theme.textSecondary
 import com.griddynamics.weather_sample_app.feature.ui.theme.viewSelected
-import com.griddynamics.weather_sample_app.feature.splash.util.seasonMainData
 
 @Composable
+@ExperimentalMaterialApi
 fun WeatherDrawer(modifier: Modifier, navController: NavController) {
     val items = listOf(
         NavDrawerItem.Home,
@@ -123,6 +129,7 @@ fun WeatherDrawer(modifier: Modifier, navController: NavController) {
     }
 }
 
+@ExperimentalMaterialApi
 @Composable
 fun WeatherDrawerItem(
     item: NavDrawerItem, selected: Boolean, onItemClick: (NavDrawerItem) -> Unit
@@ -139,10 +146,10 @@ fun WeatherDrawerItem(
         modifier = Modifier
             .fillMaxWidth()
             .height(56.dp)
-            .padding(horizontal = 8.dp, vertical = 4.dp)
-            .clickable {
-                onItemClick(item)
-            },
+            .padding(horizontal = 8.dp, vertical = 4.dp),
+        onClick = {
+            onItemClick(item)
+        }
     ) {
         Row(verticalAlignment = Alignment.CenterVertically) {
             Image(
@@ -173,6 +180,7 @@ sealed class NavDrawerItem(val route: String, val icon: ImageVector, val titleRe
     name = "Weather drawer item"
 )
 @Composable
+@ExperimentalMaterialApi
 fun DrawerItemPreview() {
     WeatherDrawerItem(item = NavDrawerItem.Home, selected = false, onItemClick = {})
 }
@@ -182,6 +190,7 @@ fun DrawerItemPreview() {
     name = "Weather drawer"
 )
 @Composable
+@ExperimentalMaterialApi
 fun DrawerPreview() {
     WeatherDrawer(Modifier, rememberNavController())
 }

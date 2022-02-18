@@ -47,6 +47,7 @@ fun MainScreen(viewModel: MainViewModel = viewModel()) {
 }
 
 @Composable
+@ExperimentalMaterialApi
 private fun SetupDrawerMenu(
     navController: NavHostController,
     content: @Composable (DrawerState) -> Unit
@@ -114,11 +115,21 @@ private fun SetupDrawerMenu(
 @ExperimentalMaterialApi
 @Composable
 private fun Navigation(navController: NavHostController, drawerState: DrawerState) {
+    val scope = rememberCoroutineScope()
+
+    val closeDrawer = {
+        scope.launch {
+            drawerState.close()
+        }
+    }
+
     NavHost(navController, startDestination = NavDrawerItem.Home.route) {
         composable(NavDrawerItem.Home.route) {
+            closeDrawer()
             CurrentCityWeather()
         }
         composable(NavDrawerItem.Settings.route) {
+            closeDrawer()
             SettingsScreen()
         }
     }
