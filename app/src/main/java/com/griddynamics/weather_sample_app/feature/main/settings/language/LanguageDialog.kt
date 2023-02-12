@@ -16,7 +16,12 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.appsflyer.AppsFlyerLib
 import com.griddynamics.weather_sample_app.R
+import com.griddynamics.weather_sample_app.core.extension.Dialogs
+import com.griddynamics.weather_sample_app.core.extension.Screens
+import com.griddynamics.weather_sample_app.core.extension.logDialogOpen
+import com.griddynamics.weather_sample_app.core.extension.logScreenOpen
 import com.griddynamics.weather_sample_app.data.model.main.settings.Language
 import com.griddynamics.weather_sample_app.data.model.main.settings.language.LanguageModel
 import com.griddynamics.weather_sample_app.feature.ui.theme.*
@@ -33,6 +38,8 @@ fun LanguageDialog(
     val context = LocalContext.current
 
     if (isShowDialog) {
+        AppsFlyerLib.getInstance().logDialogOpen(LocalContext.current, Dialogs.Language)
+
         Dialog(
             onDismissRequest = {
                 setShowDialog(false)

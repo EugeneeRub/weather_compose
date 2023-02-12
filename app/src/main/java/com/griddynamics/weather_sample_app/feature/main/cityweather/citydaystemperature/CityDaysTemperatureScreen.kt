@@ -1,4 +1,4 @@
-package com.griddynamics.weather_sample_app.feature.main.currentCityWeather.cityListOfDaysTemperature
+package com.griddynamics.weather_sample_app.feature.main.cityweather.citydaystemperature
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -11,21 +11,25 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.appsflyer.AppsFlyerLib
+import com.griddynamics.weather_sample_app.core.extension.Screens
+import com.griddynamics.weather_sample_app.core.extension.logScreenOpen
 import com.griddynamics.weather_sample_app.feature.common.WavesBackground
-import com.griddynamics.weather_sample_app.feature.main.currentCityWeather.CurrentCityWeatherViewModel
+import com.griddynamics.weather_sample_app.feature.main.cityweather.CityWeatherViewModel
 import com.griddynamics.weather_sample_app.feature.splash.util.seasonMainData
 import com.griddynamics.weather_sample_app.feature.ui.theme.textPrimary
 import com.griddynamics.weather_sample_app.feature.ui.theme.textSecondary
 
 @Composable
-fun CurrentCityListOfDayTemperatureScreen(viewModel: CurrentCityWeatherViewModel) {
+fun CityDaysTemperatureScreen(viewModel: CityWeatherViewModel) {
     val seasonData = seasonMainData
+    AppsFlyerLib.getInstance().logScreenOpen(LocalContext.current, Screens.Details)
 
     Box(
         modifier = Modifier

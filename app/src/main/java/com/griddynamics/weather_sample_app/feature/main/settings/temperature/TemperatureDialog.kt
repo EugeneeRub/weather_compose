@@ -9,12 +9,16 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.appsflyer.AppsFlyerLib
 import com.griddynamics.weather_sample_app.R
+import com.griddynamics.weather_sample_app.core.extension.Dialogs
+import com.griddynamics.weather_sample_app.core.extension.logDialogOpen
 import com.griddynamics.weather_sample_app.data.model.main.settings.TemperatureType
 import com.griddynamics.weather_sample_app.data.model.main.settings.temperature.TemperatureModel
 import com.griddynamics.weather_sample_app.feature.ui.theme.*
@@ -29,6 +33,8 @@ fun TemperatureDialog(
     onTemperatureSelected: (TemperatureType) -> Unit
 ) {
     if (isShowDialog) {
+        AppsFlyerLib.getInstance().logDialogOpen(LocalContext.current, Dialogs.Temperature)
+
         Dialog(
             onDismissRequest = {
                 setShowDialog(false)

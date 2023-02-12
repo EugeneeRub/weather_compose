@@ -10,7 +10,7 @@ open class BaseRepository {
             val response = call.execute()
             when (response.isSuccessful && response.body() != null) {
                 true -> RepositoryResponse.Result(response.body()!!)
-                false -> RepositoryResponse.Error(Exception("Request error"))
+                false -> RepositoryResponse.Error(Exception(response.message().toString()))
             }
         } catch (exception: Throwable) {
             RepositoryResponse.Error(exception)

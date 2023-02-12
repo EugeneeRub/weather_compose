@@ -1,4 +1,4 @@
-package com.griddynamics.weather_sample_app.feature.main.currentCityWeather.widgets
+package com.griddynamics.weather_sample_app.feature.main.cityweather.widgets
 
 import android.widget.Toast
 import androidx.compose.foundation.layout.padding

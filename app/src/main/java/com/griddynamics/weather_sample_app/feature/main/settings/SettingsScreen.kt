@@ -16,13 +16,17 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.appsflyer.AppsFlyerLib
 import com.griddynamics.weather_sample_app.R
+import com.griddynamics.weather_sample_app.core.extension.Screens
+import com.griddynamics.weather_sample_app.core.extension.logScreenOpen
 import com.griddynamics.weather_sample_app.data.model.main.settings.Language
 import com.griddynamics.weather_sample_app.data.model.main.settings.TemperatureType
 import com.griddynamics.weather_sample_app.feature.main.settings.language.LanguageDialog
@@ -36,6 +40,8 @@ import com.griddynamics.weather_sample_app.feature.splash.util.seasonMainData
 @ExperimentalMaterialApi
 @Composable
 fun SettingsScreen(viewModel: SettingsViewModel = viewModel()) {
+    AppsFlyerLib.getInstance().logScreenOpen(LocalContext.current, Screens.Details)
+
     val (isShowLanguageDialog, setLanguageDialog) = remember { mutableStateOf(false) }
     val (isShowTemperatureDialog, setTemperatureDialog) = remember { mutableStateOf(false) }
 

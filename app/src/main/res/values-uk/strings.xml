@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="settings">Налаштування</string>
+    <string name="home">Головна</string>
+    <string name="developed_by">Розробник</string>
+    <string name="evgenij_rubezhin">Євгеній Рубєжин</string>
+    <string name="last_updated">Оновлено</string>
+    <string name="language">Мова</string>
+    <string name="temperature">Температура</string>
+    <string name="choose_language">Оберіть мову</string>
+    <string name="choose_temperature">Оберіть температуру</string>
+</resources>

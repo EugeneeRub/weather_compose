@@ -1,4 +1,4 @@
-package com.griddynamics.weather_sample_app.feature.main.currentCityWeather
+package com.griddynamics.weather_sample_app.feature.main.cityweather
 
 import android.Manifest
 import android.app.Application
@@ -8,18 +8,21 @@ import androidx.core.app.ActivityCompat
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import com.appsflyer.AppsFlyerLib
 import com.google.android.gms.location.LocationServices
 import com.griddynamics.weather_sample_app.R
+import com.griddynamics.weather_sample_app.core.extension.AppsFlyerLocation
 import com.griddynamics.weather_sample_app.core.extension.kelvinToTemperatureType
+import com.griddynamics.weather_sample_app.core.extension.logLocation
 import com.griddynamics.weather_sample_app.core.extension.toStringTime
 import com.griddynamics.weather_sample_app.core.platfrom.BaseViewModel
 import com.griddynamics.weather_sample_app.core.platfrom.RepositoryResponse
 import java.text.SimpleDateFormat
 import java.util.*
 
-class CurrentCityWeatherViewModel(application: Application) : BaseViewModel(application) {
+class CityWeatherViewModel(application: Application) : BaseViewModel(application) {
 
-    private val weatherUseCase by lazy { CurrentCityWeatherUseCase(application) }
+    private val weatherUseCase by lazy { CityWeatherUseCase(application) }
 
     private val _currentDay = MutableLiveData<String>()
     val currentDay: LiveData<String>
@@ -70,7 +73,7 @@ class CurrentCityWeatherViewModel(application: Application) : BaseViewModel(appl
     }
 
     private fun loadCurrentWeather(lat: Double, lon: Double) {
-        weatherUseCase.invoke(CurrentCityWeatherUseCase.Params(lat, lon), viewModelScope) {
+        weatherUseCase.invoke(CityWeatherUseCase.Params(lat, lon), viewModelScope) {
             when (it) {
                 is RepositoryResponse.Result -> {
                     it.result.let { value ->
@@ -81,8 +84,18 @@ class CurrentCityWeatherViewModel(application: Application) : BaseViewModel(appl
                         value.weather.firstOrNull()?.let { weather ->
                             loadWeatherIconType(weather.icon)
                         }
+
+                        AppsFlyerLib.getInstance().logLocation(
+                            getApplication(),
+                            AppsFlyerLocation(
+                                latitude = lat,
+                                longtitude = lon,
+                                value.cityName,
+                            )
+                        )
                     }
                 }
+
                 is RepositoryResponse.Error -> {
                     _error.value = it.throwable
                 }

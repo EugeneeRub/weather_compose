@@ -24,8 +24,11 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.appsflyer.AppsFlyerLib
 import com.google.accompanist.pager.ExperimentalPagerApi
-import com.griddynamics.weather_sample_app.feature.main.currentCityWeather.CurrentCityWeather
+import com.griddynamics.weather_sample_app.core.extension.Screens
+import com.griddynamics.weather_sample_app.core.extension.logScreenOpen
+import com.griddynamics.weather_sample_app.feature.main.cityweather.CurrentCityWeather
 import com.griddynamics.weather_sample_app.feature.main.settings.SettingsScreen
 import com.griddynamics.weather_sample_app.feature.ui.theme.WeatherComposeTheme
 import com.griddynamics.weather_sample_app.feature.splash.util.seasonMainData
@@ -134,3 +137,4 @@ private fun Navigation(navController: NavHostController, drawerState: DrawerStat
         }
     }
 }
+

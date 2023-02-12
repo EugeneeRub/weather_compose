@@ -1,4 +1,4 @@
-package com.griddynamics.weather_sample_app.feature.main.currentCityWeather
+package com.griddynamics.weather_sample_app.feature.main.cityweather
 
 import android.Manifest
 import android.content.res.Configuration
@@ -16,18 +16,20 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.appsflyer.AppsFlyerLib
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
+import com.griddynamics.weather_sample_app.core.extension.Screens
+import com.griddynamics.weather_sample_app.core.extension.logScreenOpen
 import com.griddynamics.weather_sample_app.feature.common.WavesBackground
-import com.griddynamics.weather_sample_app.feature.main.currentCityWeather.cityListOfDaysTemperature.CurrentCityListOfDayTemperatureScreen
-import com.griddynamics.weather_sample_app.feature.main.currentCityWeather.widgets.*
+import com.griddynamics.weather_sample_app.feature.main.cityweather.citydaystemperature.CityDaysTemperatureScreen
+import com.griddynamics.weather_sample_app.feature.main.cityweather.widgets.*
 import com.griddynamics.weather_sample_app.feature.splash.util.seasonMainData
 import com.griddynamics.weather_sample_app.feature.ui.theme.WeatherComposeTheme
 
 @ExperimentalPagerApi
 @Composable
-@Suppress("UNUSED_PARAMETER", "NOTHING_TO_INLINE")
-fun CurrentCityWeather(viewModel: CurrentCityWeatherViewModel = viewModel()) {
+fun CurrentCityWeather(viewModel: CityWeatherViewModel = viewModel()) {
     val context = LocalContext.current
 
     val launcher = rememberLauncherForActivityResult(
@@ -46,15 +48,16 @@ fun CurrentCityWeather(viewModel: CurrentCityWeatherViewModel = viewModel()) {
         HorizontalPager(count = 2, key = { page -> "$page" }) {
             when (currentPage) {
                 0 -> CurrentCityScreen(viewModel)
-                1 -> CurrentCityListOfDayTemperatureScreen(viewModel)
+                1 -> CityDaysTemperatureScreen(viewModel)
             }
         }
     }
 }
 
 @Composable
-fun CurrentCityScreen(viewModel: CurrentCityWeatherViewModel) {
+fun CurrentCityScreen(viewModel: CityWeatherViewModel) {
     val seasonData = seasonMainData
+    AppsFlyerLib.getInstance().logScreenOpen(LocalContext.current, Screens.Main)
 
     Box(
         modifier = Modifier
