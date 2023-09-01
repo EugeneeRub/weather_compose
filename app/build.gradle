@@ -18,10 +18,13 @@ android {
             useSupportLibrary true
         }
 
+        def props = new Properties()
+        file("keys.properties").withInputStream { props.load(it) }
+
         // Config fields
         buildConfigField "String", "BASE_API_PATH", BASE_API_PATH
-        buildConfigField "String", "API_KEY", API_KEY
-        buildConfigField "String", "APPSFLYER_KEY", APPSFLYER_KEY
+        buildConfigField "String", "API_KEY", props.getProperty("API_KEY")
+        buildConfigField "String", "APPSFLYER_KEY", props.getProperty("APPSFLYER_KEY")
     }
 
     buildTypes {
