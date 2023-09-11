@@ -4,6 +4,7 @@ import com.erubezhin.weather_sample_app.core.platfrom.RetrofitBuilder
 import com.erubezhin.weather_sample_app.data.model.response.CurrentWeatherResponse
 import retrofit2.Call
 
+/** Implementation of the [WeatherApi]. */
 class WeatherApiService : WeatherApi {
     private val weatherApi by lazy { RetrofitBuilder.retrofit.create(WeatherApi::class.java) }
 

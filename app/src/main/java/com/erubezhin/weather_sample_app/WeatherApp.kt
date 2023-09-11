@@ -7,7 +7,7 @@ class WeatherApp : Application() {
     override fun onCreate() {
         super.onCreate()
 //        AppsFlyerLib.getInstance().init(BuildConfig.APPSFLYER_KEY, null, this)
-        AppsFlyerLib.getInstance().setDebugLog(true)
-        AppsFlyerLib.getInstance().start(this)
+//        AppsFlyerLib.getInstance().setDebugLog(true)
+//        AppsFlyerLib.getInstance().start(this)
     }
 }

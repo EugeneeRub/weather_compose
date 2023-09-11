@@ -6,10 +6,8 @@ import retrofit2.http.GET
 import retrofit2.http.Headers
 import retrofit2.http.Query
 
+/** Retrofit API of the application. */
 interface WeatherApi {
-    companion object {
-        const val GEO_WEATHER = "weather"
-    }
 
     @GET(GEO_WEATHER)
     @Headers("Content-Type: application/json")
@@ -17,4 +15,8 @@ interface WeatherApi {
         @Query("lat") lat: Double,
         @Query("lon") lon: Double
     ): Call<CurrentWeatherResponse>
+
+    companion object {
+        const val GEO_WEATHER = "weather"
+    }
 }

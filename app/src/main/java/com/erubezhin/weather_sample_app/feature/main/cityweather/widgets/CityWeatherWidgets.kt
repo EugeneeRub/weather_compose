@@ -22,7 +22,7 @@ import com.erubezhin.weather_sample_app.feature.ui.theme.textPrimary
 import com.erubezhin.weather_sample_app.feature.ui.theme.textSecondary
 
 @Composable
-fun ShowLastUpdatedTime(lastUpdatedTime: State<String>) {
+fun LastUpdatedTimeWidget(lastUpdatedTime: State<String>) {
     Text(
         text = stringResource(id = R.string.last_updated),
         color = MaterialTheme.colors.textSecondary,
@@ -40,7 +40,7 @@ fun ShowLastUpdatedTime(lastUpdatedTime: State<String>) {
 }
 
 @Composable
-fun ShowDay(currentDay: State<String>) {
+fun DayWidget(currentDay: State<String>) {
     Text(
         text = currentDay.value,
         color = MaterialTheme.colors.textSecondary,
@@ -49,7 +49,7 @@ fun ShowDay(currentDay: State<String>) {
 }
 
 @Composable
-fun ShowTemperature(currentTemperature: State<String>, textColor: Color) {
+fun TemperatureWidget(currentTemperature: State<String>, textColor: Color) {
     val temperature = currentTemperature.value
     Text(
         text = "${temperature}°",
@@ -71,7 +71,7 @@ fun ShowCity(currentCity: State<String>) {
 }
 
 @Composable
-fun ShowWeatherIconType(icon: State<Int?>) {
+fun WeatherIconTypeWidget(icon: State<Int?>) {
     if (icon.value == null) return
     Icon(
         painter = painterResource(id = icon.value!!),
@@ -82,7 +82,7 @@ fun ShowWeatherIconType(icon: State<Int?>) {
 }
 
 @Composable
-fun ShowError(error: Throwable?) {
+fun ErrorToast(error: Throwable?) {
     if (error != null) {
         Toast.makeText(LocalContext.current, error.message, Toast.LENGTH_SHORT).show()
     }

@@ -17,7 +17,6 @@ import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.navigation.NavHostController
 import com.erubezhin.weather_sample_app.feature.Screen
-import com.erubezhin.weather_sample_app.feature.ui.theme.WeatherComposeTheme
 import com.erubezhin.weather_sample_app.feature.ui.theme.lombokFontFamily
 import com.erubezhin.weather_sample_app.feature.ui.theme.textSecondary
 import com.erubezhin.weather_sample_app.feature.common.WavesBackground
@@ -37,7 +36,7 @@ fun AnimatedSplashScreen(navigation: NavHostController) {
         startAnimation = true
         delay(500)
         navigation.popBackStack()
-        navigation.navigate(Screen.Main.value)
+        navigation.navigate(Screen.Main.path)
     }
     SplashScreen(alphaAnim.value)
 }
@@ -46,32 +45,30 @@ fun AnimatedSplashScreen(navigation: NavHostController) {
 fun SplashScreen(alpha: Float = 1f) {
     val seasonColorsData = remember { SeasonColors.getSeasonColors(Calendar.getInstance()) }
 
-    WeatherComposeTheme {
-        ConstraintLayout(
+    ConstraintLayout(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(MaterialTheme.colors.background)
+            .alpha(alpha),
+    ) {
+        val (textMain) = createRefs()
+
+        Text(
             modifier = Modifier
-                .fillMaxSize()
-                .background(MaterialTheme.colors.background)
-                .alpha(alpha),
-        ) {
-            val (textMain) = createRefs()
+                .padding(bottom = 128.dp)
+                .constrainAs(textMain) {
+                    start.linkTo(parent.start)
+                    end.linkTo(parent.end)
+                    top.linkTo(parent.top)
+                    bottom.linkTo(parent.bottom)
+                },
+            text = "Compose Weather",
+            color = MaterialTheme.colors.textSecondary,
+            fontSize = 32.sp,
+            fontFamily = lombokFontFamily
+        )
 
-            Text(
-                modifier = Modifier
-                    .padding(bottom = 128.dp)
-                    .constrainAs(textMain) {
-                        start.linkTo(parent.start)
-                        end.linkTo(parent.end)
-                        top.linkTo(parent.top)
-                        bottom.linkTo(parent.bottom)
-                    },
-                text = "Compose Weather",
-                color = MaterialTheme.colors.textSecondary,
-                fontSize = 32.sp,
-                fontFamily = lombokFontFamily
-            )
-
-            WavesBackground(seasonColorsData.wavePrimary)
-        }
+        WavesBackground(seasonColorsData.wavePrimary)
     }
 }
 

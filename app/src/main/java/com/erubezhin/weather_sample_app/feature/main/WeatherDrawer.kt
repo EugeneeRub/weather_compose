@@ -179,6 +179,7 @@ fun WeatherDrawerItem(
     }
 }
 
+/** Holds information of navigation paths in [MainScreen]. */
 sealed class NavDrawerItem(val route: String, val icon: ImageVector, val titleRes: Int) {
     object Home : NavDrawerItem("home_page", Icons.Rounded.Home, R.string.home)
     object Settings : NavDrawerItem("settings_page", Icons.Rounded.Settings, R.string.settings)

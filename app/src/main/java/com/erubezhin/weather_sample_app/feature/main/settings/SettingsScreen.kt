@@ -31,7 +31,6 @@ import com.erubezhin.weather_sample_app.data.model.main.settings.TemperatureType
 import com.erubezhin.weather_sample_app.feature.main.settings.language.LanguageDialog
 import com.erubezhin.weather_sample_app.feature.main.settings.temperature.TemperatureDialog
 import com.erubezhin.weather_sample_app.feature.ui.theme.SeasonColors
-import com.erubezhin.weather_sample_app.feature.ui.theme.WeatherComposeTheme
 import com.erubezhin.weather_sample_app.feature.ui.theme.textPrimary
 import com.erubezhin.weather_sample_app.feature.ui.theme.textSecondary
 import com.erubezhin.weather_sample_app.feature.ui.theme.viewSelected
@@ -40,52 +39,60 @@ import com.erubezhin.weather_sample_app.R
 
 @ExperimentalMaterialApi
 @Composable
-fun SettingsScreen(viewModel: SettingsViewModel = viewModel()) {
-    AppsFlyerLib.getInstance().logScreenOpen(LocalContext.current, Screens.Details)
+fun SettingsScreen(
+    viewModel: SettingsViewModel = viewModel(
+        factory = SettingsViewModel.factory(LocalContext.current.applicationContext),
+    )
+) {
+    val context = LocalContext.current
+    AppsFlyerLib.getInstance().logScreenOpen(context, Screens.Details)
 
     val seasonColors = remember { SeasonColors.getSeasonColors(Calendar.getInstance()) }
     val (isShowLanguageDialog, setLanguageDialog) = remember { mutableStateOf(false) }
     val (isShowTemperatureDialog, setTemperatureDialog) = remember { mutableStateOf(false) }
 
-    WeatherComposeTheme {
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(MaterialTheme.colors.background),
+
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(MaterialTheme.colors.background),
+    ) {
+        Spacer(modifier = Modifier.padding(top = 64.dp))
+        Text(
+            text = stringResource(id = R.string.settings),
+            color = MaterialTheme.colors.textSecondary,
+            fontSize = 22.sp,
+            textAlign = TextAlign.Center,
+            modifier = Modifier.fillMaxWidth()
+        )
+        Spacer(modifier = Modifier.padding(top = 64.dp))
+        ShowLanguageView(
+            seasonColors = seasonColors,
+            languageState = viewModel.selectedLanguage.observeAsState()
         ) {
-            Spacer(modifier = Modifier.padding(top = 64.dp))
-            Text(
-                text = stringResource(id = R.string.settings),
-                color = MaterialTheme.colors.textSecondary,
-                fontSize = 22.sp,
-                textAlign = TextAlign.Center,
-                modifier = Modifier.fillMaxWidth()
-            )
-            Spacer(modifier = Modifier.padding(top = 64.dp))
-            ShowLanguageView(
-                seasonColors = seasonColors,
-                languageState = viewModel.selectedLanguage.observeAsState()
-            ) {
-                setLanguageDialog(true)
-            }
-            ShowTemperatureTypeView(
-                seasonColors,
-                viewModel.selectedTemperatureType.observeAsState(),
-            ) {
-                setTemperatureDialog(true)
-            }
+            setLanguageDialog(true)
         }
-        LanguageDialog(
-            isShowDialog = isShowLanguageDialog,
-            setShowDialog = setLanguageDialog,
-            onLanguageSelected = viewModel::updateLocale
-        )
-        TemperatureDialog(
-            isShowDialog = isShowTemperatureDialog,
-            setShowDialog = setTemperatureDialog,
-            onTemperatureSelected = viewModel::updateTemperatureType
-        )
+        ShowTemperatureTypeView(
+            seasonColors,
+            viewModel.selectedTemperatureType.observeAsState(),
+        ) {
+            setTemperatureDialog(true)
+        }
     }
+    LanguageDialog(
+        isShowLanguageDialog,
+        setShowDialog = setLanguageDialog,
+        onLanguageSelected = { language ->
+            viewModel.updateLocale(context, language)
+        }
+    )
+    TemperatureDialog(
+        isShowTemperatureDialog,
+        setShowDialog = setTemperatureDialog,
+        onTemperatureSelected = { temperature ->
+            viewModel.updateTemperatureType(context, temperature)
+        }
+    )
 }
 
 @ExperimentalMaterialApi

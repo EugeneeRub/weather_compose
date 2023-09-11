@@ -23,6 +23,7 @@ android {
 
         // Config fields
         buildConfigField "String", "BASE_API_PATH", BASE_API_PATH
+        buildConfigField "String", "PREFS_STORAGE_KEY", PREFS_STORAGE_KEY
         buildConfigField "String", "API_KEY", props.getProperty("API_KEY")
         buildConfigField "String", "APPSFLYER_KEY", props.getProperty("APPSFLYER_KEY")
     }
@@ -76,6 +77,7 @@ dependencies {
     androidTestImplementation "androidx.compose.ui:ui-test-junit4:$compose_version"
     //Other
     implementation "com.google.accompanist:accompanist-pager:0.20.0"
+    implementation "com.google.accompanist:accompanist-systemuicontroller:0.31.0-alpha"
     implementation 'com.google.android.gms:play-services-location:21.0.1'
     implementation "org.jetbrains.kotlin:kotlin-reflect:1.8.10"
     implementation 'com.appsflyer:af-android-sdk:6.9.0'

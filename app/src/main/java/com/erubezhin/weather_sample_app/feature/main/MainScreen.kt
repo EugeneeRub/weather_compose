@@ -1,8 +1,6 @@
 package com.erubezhin.weather_sample_app.feature.main
 
 import androidx.activity.compose.BackHandler
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -11,9 +9,9 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Menu
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
@@ -36,8 +34,13 @@ import java.util.*
 @ExperimentalPagerApi
 @ExperimentalMaterialApi
 @Composable
-fun MainScreen(viewModel: MainViewModel = viewModel()) {
-    viewModel.updateLocale(LocalContext.current)
+fun MainScreen(
+    viewModel: MainViewModel = viewModel(
+        factory = MainViewModel.factory(LocalContext.current.applicationContext),
+    )
+) {
+    val context = LocalContext.current
+    LaunchedEffect(key1 = true) { viewModel.prepareLocale(context) }
 
     val navController = rememberNavController()
 
@@ -65,43 +68,33 @@ private fun SetupDrawerMenu(
         }
     }
 
-    CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Rtl) {
+    CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Ltr) {
         ModalDrawer(
             drawerState = drawerState,
             gesturesEnabled = drawerState.isOpen,
             drawerBackgroundColor = MaterialTheme.colors.background,
             drawerElevation = 0.dp,
-            drawerContent = {
-                CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Ltr) {
-                    WeatherDrawer(navController = navController)
-                }
-            }
+            drawerContent = { WeatherDrawer(navController = navController) }
         ) {
-            CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Ltr) {
-                content(drawerState)
-                Box {
-                    Card(
-                        backgroundColor = seasonColorsData.wavePrimary,
-                        shape = RoundedCornerShape(topStart = 12.dp, bottomStart = 12.dp),
-                        modifier = Modifier
-                            .padding(top = 56.dp)
-                            .align(Alignment.TopEnd)
-                            .clickable {
-                                scope.launch {
-                                    drawerState.open()
-                                }
-                            },
-                    ) {
-                        Icon(
-                            Icons.Rounded.Menu,
-                            tint = Color.White,
-                            contentDescription = "",
-                            modifier = Modifier
-                                .padding(12.dp)
-                                .size(28.dp)
-                        )
+            content(drawerState)
+            Card(
+                backgroundColor = seasonColorsData.wavePrimary,
+                shape = RoundedCornerShape(topEnd = 12.dp, bottomEnd = 12.dp),
+                modifier = Modifier.padding(top = 48.dp),
+                onClick = {
+                    scope.launch {
+                        drawerState.open()
                     }
                 }
+            ) {
+                Icon(
+                    Icons.Rounded.Menu,
+                    tint = Color.White,
+                    contentDescription = "Burger icon",
+                    modifier = Modifier
+                        .padding(12.dp)
+                        .size(28.dp)
+                )
             }
         }
     }

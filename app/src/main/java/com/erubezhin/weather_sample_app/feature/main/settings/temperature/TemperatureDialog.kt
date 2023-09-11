@@ -29,7 +29,9 @@ import com.erubezhin.weather_sample_app.R
 @Composable
 fun TemperatureDialog(
     isShowDialog: Boolean,
-    viewModel: TemperatureViewModel = viewModel(),
+    viewModel: TemperatureViewModel = viewModel(
+        factory = TemperatureViewModel.factory(LocalContext.current.applicationContext),
+        ),
     setShowDialog: (Boolean) -> Unit,
     onTemperatureSelected: (TemperatureType) -> Unit
 ) {

@@ -4,7 +4,7 @@ import android.content.Context
 import com.erubezhin.weather_sample_app.core.interactor.UseCase
 import com.erubezhin.weather_sample_app.core.platfrom.RepositoryResponse
 import com.erubezhin.weather_sample_app.data.model.response.CurrentWeatherResponse
-import com.erubezhin.weather_sample_app.data.repository.currentWeather.WeatherRepository.WeatherRepositoryImpl
+import com.erubezhin.weather_sample_app.data.repository.currentWeather.WeatherRepositoryImpl
 
 class CityWeatherUseCase(context: Context) :
     UseCase<CurrentWeatherResponse, CityWeatherUseCase.Params>() {

@@ -30,7 +30,9 @@ import java.util.*
 @Composable
 fun LanguageDialog(
     isShowDialog: Boolean,
-    viewModel: LanguageViewModel = viewModel(),
+    viewModel: LanguageViewModel = viewModel(
+        factory = LanguageViewModel.factory(LocalContext.current.applicationContext),
+    ),
     setShowDialog: (Boolean) -> Unit,
     onLanguageSelected: (Language) -> Unit
 ) {

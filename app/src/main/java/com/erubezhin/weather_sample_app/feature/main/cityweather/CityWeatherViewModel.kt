@@ -1,12 +1,13 @@
 package com.erubezhin.weather_sample_app.feature.main.cityweather
 
 import android.Manifest
-import android.app.Application
 import android.content.Context
 import android.content.pm.PackageManager
 import androidx.core.app.ActivityCompat
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.appsflyer.AppsFlyerLib
 import com.google.android.gms.location.LocationServices
@@ -14,15 +15,28 @@ import com.erubezhin.weather_sample_app.core.extension.AppsFlyerLocation
 import com.erubezhin.weather_sample_app.core.extension.kelvinToTemperatureType
 import com.erubezhin.weather_sample_app.core.extension.logLocation
 import com.erubezhin.weather_sample_app.core.extension.toStringTime
-import com.erubezhin.weather_sample_app.core.platfrom.BaseViewModel
 import com.erubezhin.weather_sample_app.core.platfrom.RepositoryResponse
 import com.erubezhin.weather_sample_app.R
+import com.erubezhin.weather_sample_app.core.manager.locale.LocaleManager
+import com.erubezhin.weather_sample_app.core.manager.locale.LocaleManagerImpl
+import com.erubezhin.weather_sample_app.core.manager.temperature.TemperatureManager
+import com.erubezhin.weather_sample_app.core.manager.temperature.TemperatureManagerImpl
+import com.erubezhin.weather_sample_app.feature.main.settings.SettingsScreen
 import java.text.SimpleDateFormat
 import java.util.*
 
-class CityWeatherViewModel(application: Application) : BaseViewModel(application) {
-
-    private val weatherUseCase by lazy { CityWeatherUseCase(application) }
+/**
+ * Settings ViewModel that helps to work [SettingsScreen].
+ *
+ * @property weatherUseCase helps to load the weather data from the server.
+ * @property temperatureManager helps to work with the temperature of the application.
+ * @param localeManager helps to work with the locale of the application.
+ */
+class CityWeatherViewModel(
+    private val weatherUseCase: CityWeatherUseCase,
+    private val temperatureManager: TemperatureManager,
+    localeManager: LocaleManager,
+) : ViewModel() {
 
     private val _currentDay = MutableLiveData<String>()
     val currentDay: LiveData<String>
@@ -50,11 +64,17 @@ class CityWeatherViewModel(application: Application) : BaseViewModel(application
 
     init {
         val day = SimpleDateFormat(
-            "EEEE", Locale(getLanguageCode().lowercase())
+            "EEEE", Locale(localeManager.getLanguageCode().lowercase())
         ).format(Calendar.getInstance().time)
         _currentDay.value = day
     }
 
+    /**
+     * Load the weather info from the server if [Manifest.permission.ACCESS_FINE_LOCATION]
+     * permission was provided
+     *
+     * @param context resources of the application.
+     */
     fun loadWeather(context: Context) {
         if (ActivityCompat.checkSelfPermission(
                 context, Manifest.permission.ACCESS_FINE_LOCATION
@@ -64,7 +84,7 @@ class CityWeatherViewModel(application: Application) : BaseViewModel(application
 
             locationService.lastLocation
                 .addOnSuccessListener {
-                    loadCurrentWeather(it.latitude, it.longitude)
+                    loadCurrentWeather(context, it.latitude, it.longitude)
                 }
                 .addOnFailureListener {
                     _error.value = it
@@ -72,13 +92,13 @@ class CityWeatherViewModel(application: Application) : BaseViewModel(application
         }
     }
 
-    private fun loadCurrentWeather(lat: Double, lon: Double) {
+    private fun loadCurrentWeather(context: Context, lat: Double, lon: Double) {
         weatherUseCase.invoke(CityWeatherUseCase.Params(lat, lon), viewModelScope) {
             when (it) {
                 is RepositoryResponse.Result -> {
                     it.result.let { value ->
                         _currentTemperature.value =
-                            value.main.temp.kelvinToTemperatureType(getTemperatureType())
+                            value.main.temp.kelvinToTemperatureType(temperatureManager.getTemperatureType())
                         _currentCity.value = value.cityName
                         _lastUpdatedTime.value = Calendar.getInstance().time.toStringTime()
                         value.weather.firstOrNull()?.let { weather ->
@@ -86,7 +106,7 @@ class CityWeatherViewModel(application: Application) : BaseViewModel(application
                         }
 
                         AppsFlyerLib.getInstance().logLocation(
-                            getApplication(),
+                            context,
                             AppsFlyerLocation(
                                 latitude = lat,
                                 longitude = lon,
@@ -123,6 +143,18 @@ class CityWeatherViewModel(application: Application) : BaseViewModel(application
 //            18 -> R.drawable.ic_windy
             else -> R.drawable.ic_sunny
         }
+    }
 
+    companion object {
+        /** Provides factory of the [CityWeatherViewModel]. */
+        fun factory(applicationContext: Context) = object : ViewModelProvider.Factory {
+            override fun <T : ViewModel> create(modelClass: Class<T>): T {
+                return CityWeatherViewModel(
+                    weatherUseCase = CityWeatherUseCase(applicationContext),
+                    localeManager = LocaleManagerImpl(applicationContext),
+                    temperatureManager = TemperatureManagerImpl(applicationContext),
+                ) as T
+            }
+        }
     }
 }

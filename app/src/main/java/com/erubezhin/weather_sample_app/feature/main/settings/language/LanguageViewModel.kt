@@ -1,14 +1,23 @@
 package com.erubezhin.weather_sample_app.feature.main.settings.language
 
-import android.app.Application
 import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.erubezhin.weather_sample_app.core.platfrom.BaseViewModel
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
+import com.erubezhin.weather_sample_app.core.manager.locale.LocaleManager
+import com.erubezhin.weather_sample_app.core.manager.locale.LocaleManagerImpl
 import com.erubezhin.weather_sample_app.data.model.main.settings.Language
 import com.erubezhin.weather_sample_app.data.model.main.settings.language.LanguageModel
 
-class LanguageViewModel(application: Application) : BaseViewModel(application) {
+/**
+ * Language ViewModel that helps to work [LanguageDialog].
+ *
+ * @property localeManager helps to work with the locale of the application.
+ */
+class LanguageViewModel(
+    private val localeManager: LocaleManager,
+) : ViewModel() {
     private lateinit var listOfLanguages: List<LanguageModel>
 
     private val _languages = MutableLiveData<List<LanguageModel>>()
@@ -20,7 +29,7 @@ class LanguageViewModel(application: Application) : BaseViewModel(application) {
     }
 
     private fun prepareLocaleList() {
-        val selectedLanguageCode = getLanguageCode()
+        val selectedLanguageCode = localeManager.getLanguageCode()
         listOfLanguages = Language::class.nestedClasses
             .mapNotNull { it.objectInstance as? Language }
             .map { LanguageModel(it.code == selectedLanguageCode, it) }
@@ -28,12 +37,22 @@ class LanguageViewModel(application: Application) : BaseViewModel(application) {
         _languages.value = listOfLanguages
     }
 
+    /** Updates application [context] locale via [language]. */
     fun updateLanguage(context: Context, language: Language) {
-        setLanguageCode(language.code)
-        setLocale(context, language)
+        localeManager.setLanguageCode(language.code)
+        localeManager.updateContextLocale(context, language)
         listOfLanguages.forEach {
             it.isSelected = language.code == it.locale.code
         }
         _languages.value = listOfLanguages
+    }
+
+    companion object {
+        /** Provides factory of the [LanguageViewModel]. */
+        fun factory(applicationContext: Context) = object : ViewModelProvider.Factory {
+            override fun <T : ViewModel> create(modelClass: Class<T>): T {
+                return LanguageViewModel(LocaleManagerImpl(applicationContext)) as T
+            }
+        }
     }
 }
