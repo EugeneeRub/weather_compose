@@ -5,33 +5,33 @@ import android.content.res.Configuration
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
+import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.SideEffect
+import androidx.compose.runtime.State
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.font.FontFamily
-import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.appsflyer.AppsFlyerLib
-import com.erubezhin.weather_sample_app.R
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.erubezhin.weather_sample_app.core.extension.Screens
 import com.erubezhin.weather_sample_app.core.extension.logScreenOpen
 import com.erubezhin.weather_sample_app.feature.common.WavesBackground
 import com.erubezhin.weather_sample_app.feature.main.cityweather.widgets.*
 import com.erubezhin.weather_sample_app.feature.ui.theme.SeasonColors
-import com.erubezhin.weather_sample_app.feature.ui.theme.textPrimary
+import com.erubezhin.weather_sample_app.feature.ui.theme.textSecondary
+import com.erubezhin.weather_sample_app.feature.ui.theme.viewSelected
 import java.util.*
 
 @ExperimentalPagerApi
@@ -58,10 +58,21 @@ fun CurrentCityWeather(
     CurrentCityScreen(viewModel)
 }
 
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun CurrentCityScreen(viewModel: CityWeatherViewModel) {
     AppsFlyerLib.getInstance().logScreenOpen(LocalContext.current, Screens.Main)
     val seasonColors = remember { SeasonColors.getSeasonColors(Calendar.getInstance()) }
+    val swipeState = rememberSwipeableState(initialValue = "Start")
+    val anchorsMap = mapOf(0f to "Start", 200f to "Finish")
+
+    val iconState = viewModel.currentWeatherIcon.observeAsState()
+    val cityState = viewModel.currentCity.observeAsState(initial = "")
+    val temperatureState = viewModel.currentTemperature.observeAsState(initial = "0")
+    val lastUpdatedTimeState = viewModel.lastUpdatedTime.observeAsState(initial = "")
+
+    val finishPx = 200f
+    val middlePx = finishPx / 2
 
     Box(
         modifier = Modifier
@@ -69,79 +80,135 @@ fun CurrentCityScreen(viewModel: CityWeatherViewModel) {
             .background(MaterialTheme.colors.background)
     ) {
         WavesBackground(seasonColors.wavePrimary)
-
         Column(
-            modifier = Modifier.fillMaxSize(),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             Spacer(modifier = Modifier.padding(top = 62.dp))
             DayWidget(viewModel.currentDay.observeAsState(initial = ""))
             Spacer(modifier = Modifier.padding(top = 32.dp))
-//            Column(
-//                modifier = Modifier.fillMaxWidth()
-//            ) {
-//                CheckView()
-//            }
-            TemperatureWidget(
-                viewModel.currentTemperature.observeAsState(initial = "0"),
-                seasonColors.textColor
-            )
-            Spacer(modifier = Modifier.padding(top = 16.dp))
-            ShowCity(viewModel.currentCity.observeAsState(initial = ""))
-            Spacer(modifier = Modifier.padding(top = 16.dp))
-            WeatherIconTypeWidget(viewModel.currentWeatherIcon.observeAsState())
-            Spacer(modifier = Modifier.padding(top = 24.dp))
-            LastUpdatedTimeWidget(viewModel.lastUpdatedTime.observeAsState(initial = ""))
+
+            Box(modifier = Modifier
+                .fillMaxSize()
+                .swipeable(state = swipeState,
+                    anchors = anchorsMap,
+                    orientation = Orientation.Vertical,
+                    reverseDirection = true,
+                    thresholds = { _, _ -> FractionalThreshold(0.5f) }
+                )
+            ) {
+                if (swipeState.offset.value > middlePx) {
+                    WeekDaysView(
+                        swipeState, iconState, cityState, temperatureState, seasonColors, finishPx
+                    )
+                } else {
+                    CurrentDayView(
+                        swipeState,
+                        iconState,
+                        cityState,
+                        temperatureState,
+                        lastUpdatedTimeState,
+                        seasonColors,
+                        finishPx
+                    )
+                }
+            }
         }
         ErrorToast(viewModel.error.observeAsState().value)
     }
 }
 
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
-@Preview(
-    showBackground = true,
-    backgroundColor = 0xFFFFFFFF,
-)
-fun CheckView() {
-    Row(
-        modifier = Modifier
-            .height(80.dp)
-            .padding(start = 16.dp),
-    ) {
-        Box(
+fun WeekDaysView(
+    swipeState: SwipeableState<String>,
+    iconState: State<Int?>,
+    cityState: State<String>,
+    temperatureState: State<String>,
+    seasonColors: SeasonColors,
+    finishPx: Float,
+) {
+    Column(modifier = Modifier
+        .fillMaxWidth()
+        .graphicsLayer {
+            alpha = swipeState.offset.value / finishPx
+        }) {
+        Row(
             modifier = Modifier
-                .background(Color(0xFFF3F3F3), CircleShape)
-                .padding(8.dp),
-        ) {
-            Icon(
-                painter = painterResource(id = R.drawable.ic_nighttime),
-                modifier = Modifier.size(72.dp),
-                contentDescription = "Weather icon",
-                tint = MaterialTheme.colors.textPrimary
-            )
-        }
-        Column(
-            modifier = Modifier
-                .fillMaxHeight()
+                .height(92.dp)
+                .fillMaxWidth()
                 .padding(start = 16.dp),
         ) {
-            Text(
-                text = "20°",
-                color = SeasonColors.AutumnColors.textColor,
-                fontSize = 32.sp,
-                fontFamily = FontFamily.Default,
-                fontWeight = FontWeight.Light,
-                letterSpacing = 0.sp,
-            )
-            Text(
-                text = "Kharkiv",
-                color = SeasonColors.AutumnColors.textColor,
-                fontSize = 24.sp,
-                fontFamily = FontFamily.Default,
-                fontWeight = FontWeight.Light,
-                letterSpacing = 0.sp,
-            )
+            Box(
+                modifier = Modifier
+                    .background(MaterialTheme.colors.viewSelected, CircleShape)
+                    .padding(8.dp),
+            ) {
+                WeatherIconTypeWidget(
+                    iconState,
+                    modifier = Modifier.size(72.dp),
+                )
+            }
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(start = 16.dp),
+            ) {
+                TextWidget(
+                    text = "${temperatureState.value}°",
+                    textStyle = TextStyle(
+                        color = seasonColors.wavePrimary, fontSize = 32.sp
+                    ),
+                )
+                TextStateWidget(
+                    cityState, textStyle = TextStyle(
+                        color = MaterialTheme.colors.textSecondary, fontSize = 24.sp
+                    )
+                )
+            }
         }
+    }
+}
+
+@OptIn(ExperimentalMaterialApi::class)
+@Composable
+fun CurrentDayView(
+    swipeState: SwipeableState<String>,
+    iconState: State<Int?>,
+    cityState: State<String>,
+    temperatureState: State<String>,
+    lastUpdatedTimeState: State<String>,
+    seasonColors: SeasonColors,
+    finishPx: Float,
+) {
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = Modifier
+            .fillMaxSize()
+            .graphicsLayer {
+                alpha = (finishPx - swipeState.offset.value) / finishPx
+            },
+    ) {
+        TemperatureWidget(temperatureState, seasonColors.textColor)
+        Spacer(
+            modifier = Modifier.padding(top = 16.dp),
+        )
+        TextStateWidget(
+            cityState,
+            textStyle = TextStyle(
+                color = MaterialTheme.colors.textSecondary, fontSize = 32.sp
+            ),
+        )
+        Spacer(
+            modifier = Modifier.padding(top = 16.dp),
+        )
+        WeatherIconTypeWidget(
+            iconState,
+            modifier = Modifier.size(156.dp),
+        )
+        Spacer(
+            modifier = Modifier.padding(top = 24.dp),
+        )
+        LastUpdatedTimeWidget(lastUpdatedTimeState)
     }
 }
 
