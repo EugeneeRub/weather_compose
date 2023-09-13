@@ -1,4 +1,4 @@
-package com.erubezhin.weather_sample_app.core.manager.temperature
+package com.erubezhin.weather_sample_app.data.manager.temperature
 
 /**
  * Temperature manager that helps to provide temperature from the SharedPreferences.

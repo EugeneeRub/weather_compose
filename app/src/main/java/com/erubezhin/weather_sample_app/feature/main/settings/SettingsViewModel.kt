@@ -7,10 +7,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.appsflyer.AppsFlyerLib
 import com.erubezhin.weather_sample_app.core.extension.logTemperatureChange
-import com.erubezhin.weather_sample_app.core.manager.locale.LocaleManager
-import com.erubezhin.weather_sample_app.core.manager.locale.LocaleManagerImpl
-import com.erubezhin.weather_sample_app.core.manager.temperature.TemperatureManager
-import com.erubezhin.weather_sample_app.core.manager.temperature.TemperatureManagerImpl
+import com.erubezhin.weather_sample_app.data.manager.locale.LocaleManager
+import com.erubezhin.weather_sample_app.data.manager.locale.LocaleManagerImpl
+import com.erubezhin.weather_sample_app.data.manager.temperature.TemperatureManager
+import com.erubezhin.weather_sample_app.data.manager.temperature.TemperatureManagerImpl
 import com.erubezhin.weather_sample_app.data.model.main.settings.Language
 import com.erubezhin.weather_sample_app.data.model.main.settings.TemperatureType
 

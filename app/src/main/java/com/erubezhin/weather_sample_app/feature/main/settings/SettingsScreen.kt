@@ -45,7 +45,7 @@ fun SettingsScreen(
     )
 ) {
     val context = LocalContext.current
-    AppsFlyerLib.getInstance().logScreenOpen(context, Screens.Details)
+    AppsFlyerLib.getInstance().logScreenOpen(context, Screens.Settings)
 
     val seasonColors = remember { SeasonColors.getSeasonColors(Calendar.getInstance()) }
     val (isShowLanguageDialog, setLanguageDialog) = remember { mutableStateOf(false) }

@@ -3,8 +3,8 @@ package com.erubezhin.weather_sample_app.feature.main
 import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.erubezhin.weather_sample_app.core.manager.locale.LocaleManager
-import com.erubezhin.weather_sample_app.core.manager.locale.LocaleManagerImpl
+import com.erubezhin.weather_sample_app.data.manager.locale.LocaleManager
+import com.erubezhin.weather_sample_app.data.manager.locale.LocaleManagerImpl
 import com.erubezhin.weather_sample_app.data.model.main.settings.Language
 
 /**

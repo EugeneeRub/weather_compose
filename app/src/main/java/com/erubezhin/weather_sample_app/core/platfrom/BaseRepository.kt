@@ -5,20 +5,20 @@ import java.lang.Exception
 
 open class BaseRepository {
 
-    protected fun <T> request(call: Call<T>): RepositoryResponse<T> {
+    protected fun <T> request(call: Call<T>): Response<T> {
         return try {
             val response = call.execute()
             when (response.isSuccessful && response.body() != null) {
-                true -> RepositoryResponse.Result(response.body()!!)
-                false -> RepositoryResponse.Error(Exception(response.message().toString()))
+                true -> Response.Result(response.body()!!)
+                false -> Response.Error(Exception(response.message().toString()))
             }
         } catch (exception: Throwable) {
-            RepositoryResponse.Error(exception)
+            Response.Error(exception)
         }
     }
 }
 
-sealed class RepositoryResponse<out T> {
-    data class Result<T>(val result: T) : RepositoryResponse<T>()
-    data class Error<T>(val throwable: Throwable) : RepositoryResponse<T>()
+sealed class Response<out T> {
+    data class Result<T>(val result: T) : Response<T>()
+    data class Error<T>(val throwable: Throwable) : Response<T>()
 }

@@ -1,4 +1,4 @@
-package com.erubezhin.weather_sample_app.feature.main.cityweather
+package com.erubezhin.weather_sample_app.feature.main.currentweather
 
 import android.Manifest
 import android.content.res.Configuration
@@ -11,8 +11,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.SideEffect
-import androidx.compose.runtime.State
-import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -27,9 +26,11 @@ import com.appsflyer.AppsFlyerLib
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.erubezhin.weather_sample_app.core.extension.Screens
 import com.erubezhin.weather_sample_app.core.extension.logScreenOpen
+import com.erubezhin.weather_sample_app.core.interactor.DataState
 import com.erubezhin.weather_sample_app.feature.common.WavesBackground
-import com.erubezhin.weather_sample_app.feature.main.cityweather.widgets.*
+import com.erubezhin.weather_sample_app.feature.main.currentweather.widgets.*
 import com.erubezhin.weather_sample_app.feature.ui.theme.SeasonColors
+import com.erubezhin.weather_sample_app.feature.ui.theme.textPrimary
 import com.erubezhin.weather_sample_app.feature.ui.theme.textSecondary
 import com.erubezhin.weather_sample_app.feature.ui.theme.viewSelected
 import java.util.*
@@ -62,17 +63,15 @@ fun CurrentCityWeather(
 @Composable
 fun CurrentCityScreen(viewModel: CityWeatherViewModel) {
     AppsFlyerLib.getInstance().logScreenOpen(LocalContext.current, Screens.Main)
+    val finishPx = 400f
+    val pivotPx = finishPx / 2
+
     val seasonColors = remember { SeasonColors.getSeasonColors(Calendar.getInstance()) }
     val swipeState = rememberSwipeableState(initialValue = "Start")
-    val anchorsMap = mapOf(0f to "Start", 200f to "Finish")
+    val anchorsMap = mapOf(0f to "Start", finishPx to "Finish")
 
-    val iconState = viewModel.currentWeatherIcon.observeAsState()
-    val cityState = viewModel.currentCity.observeAsState(initial = "")
-    val temperatureState = viewModel.currentTemperature.observeAsState(initial = "0")
-    val lastUpdatedTimeState = viewModel.lastUpdatedTime.observeAsState(initial = "")
-
-    val finishPx = 200f
-    val middlePx = finishPx / 2
+    val event by viewModel.event
+    val error by viewModel.error
 
     Box(
         modifier = Modifier
@@ -83,37 +82,45 @@ fun CurrentCityScreen(viewModel: CityWeatherViewModel) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
-            Spacer(modifier = Modifier.padding(top = 62.dp))
-            DayWidget(viewModel.currentDay.observeAsState(initial = ""))
-            Spacer(modifier = Modifier.padding(top = 32.dp))
+            when (event) {
+                is DataState.Success -> {
+                    val result = (event as DataState.Success<CurrentWeatherModel>).data
+                    Spacer(modifier = Modifier.padding(top = 62.dp))
+                    DayWidget(result.day)
+                    Spacer(modifier = Modifier.padding(top = 32.dp))
 
-            Box(modifier = Modifier
-                .fillMaxSize()
-                .swipeable(state = swipeState,
-                    anchors = anchorsMap,
-                    orientation = Orientation.Vertical,
-                    reverseDirection = true,
-                    thresholds = { _, _ -> FractionalThreshold(0.5f) }
-                )
-            ) {
-                if (swipeState.offset.value > middlePx) {
-                    WeekDaysView(
-                        swipeState, iconState, cityState, temperatureState, seasonColors, finishPx
-                    )
-                } else {
-                    CurrentDayView(
-                        swipeState,
-                        iconState,
-                        cityState,
-                        temperatureState,
-                        lastUpdatedTimeState,
-                        seasonColors,
-                        finishPx
-                    )
+                    Box(modifier = Modifier
+                        .wrapContentSize()
+                        .swipeable(state = swipeState,
+                            anchors = anchorsMap,
+                            orientation = Orientation.Vertical,
+                            reverseDirection = true,
+                            thresholds = { _, _ -> FractionalThreshold(0.5f) }
+                        )
+                    ) {
+                        if (swipeState.offset.value > pivotPx) {
+                            WeekDaysView(
+                                swipeState, result, seasonColors, finishPx
+                            )
+                        } else {
+                            CurrentDayView(
+                                swipeState,
+                                result,
+                                seasonColors,
+                                finishPx
+                            )
+                        }
+                    }
+                }
+                is DataState.Loading -> {
+
+                }
+                is DataState.Error -> {
+
                 }
             }
         }
-        ErrorToast(viewModel.error.observeAsState().value)
+        ErrorToast(error)
     }
 }
 
@@ -121,9 +128,7 @@ fun CurrentCityScreen(viewModel: CityWeatherViewModel) {
 @Composable
 fun WeekDaysView(
     swipeState: SwipeableState<String>,
-    iconState: State<Int?>,
-    cityState: State<String>,
-    temperatureState: State<String>,
+    model: CurrentWeatherModel,
     seasonColors: SeasonColors,
     finishPx: Float,
 ) {
@@ -144,7 +149,7 @@ fun WeekDaysView(
                     .padding(8.dp),
             ) {
                 WeatherIconTypeWidget(
-                    iconState,
+                    model.weatherIconId,
                     modifier = Modifier.size(72.dp),
                 )
             }
@@ -154,14 +159,14 @@ fun WeekDaysView(
                     .padding(start = 16.dp),
             ) {
                 TextWidget(
-                    text = "${temperatureState.value}°",
+                    text = model.temperature,
                     textStyle = TextStyle(
                         color = seasonColors.wavePrimary, fontSize = 32.sp
                     ),
                 )
-                TextStateWidget(
-                    cityState, textStyle = TextStyle(
-                        color = MaterialTheme.colors.textSecondary, fontSize = 24.sp
+                TextWidget(
+                    model.city, textStyle = TextStyle(
+                        color = MaterialTheme.colors.textPrimary, fontSize = 24.sp
                     )
                 )
             }
@@ -173,10 +178,7 @@ fun WeekDaysView(
 @Composable
 fun CurrentDayView(
     swipeState: SwipeableState<String>,
-    iconState: State<Int?>,
-    cityState: State<String>,
-    temperatureState: State<String>,
-    lastUpdatedTimeState: State<String>,
+    model: CurrentWeatherModel,
     seasonColors: SeasonColors,
     finishPx: Float,
 ) {
@@ -188,12 +190,12 @@ fun CurrentDayView(
                 alpha = (finishPx - swipeState.offset.value) / finishPx
             },
     ) {
-        TemperatureWidget(temperatureState, seasonColors.textColor)
+        TemperatureWidget(model.temperature, seasonColors.textColor)
         Spacer(
             modifier = Modifier.padding(top = 16.dp),
         )
-        TextStateWidget(
-            cityState,
+        TextWidget(
+            model.city,
             textStyle = TextStyle(
                 color = MaterialTheme.colors.textSecondary, fontSize = 32.sp
             ),
@@ -202,13 +204,13 @@ fun CurrentDayView(
             modifier = Modifier.padding(top = 16.dp),
         )
         WeatherIconTypeWidget(
-            iconState,
+            model.weatherIconId,
             modifier = Modifier.size(156.dp),
         )
         Spacer(
             modifier = Modifier.padding(top = 24.dp),
         )
-        LastUpdatedTimeWidget(lastUpdatedTimeState)
+        LastUpdatedTimeWidget(model.lastUpdatedTime)
     }
 }
 

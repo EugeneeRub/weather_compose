@@ -9,6 +9,7 @@ private const val SCREEN_OPENED = "SCREEN OPENED"
 private const val DIALOG_OPENED = "DIALOG OPENED"
 private const val LANGUAGE_CHANGE = "LANGUAGE CHANGE"
 private const val TEMPERATURE_CHANGE = "TEMPERATURE CHANGE"
+
 //Content
 private const val LANGUAGE = "LANGUAGE"
 private const val TEMPERATURE = "TEMPERATURE"
@@ -24,6 +25,7 @@ fun AppsFlyerLib.logDialogOpen(context: Context, dialog: Dialogs) {
 fun AppsFlyerLib.logLanguageChange(context: Context, lang: String) {
     logEvent(context, LANGUAGE_CHANGE, mapOf(LANGUAGE to lang))
 }
+
 fun AppsFlyerLib.logTemperatureChange(context: Context, temperature: String) {
     logEvent(context, TEMPERATURE_CHANGE, mapOf(TEMPERATURE to temperature))
 }
@@ -47,7 +49,7 @@ data class AppsFlyerLocation(
 )
 
 enum class Screens {
-    Main, Details, Settings
+    Main, Settings
 }
 
 enum class Dialogs {

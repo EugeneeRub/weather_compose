@@ -5,8 +5,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.erubezhin.weather_sample_app.core.manager.locale.LocaleManager
-import com.erubezhin.weather_sample_app.core.manager.locale.LocaleManagerImpl
+import com.erubezhin.weather_sample_app.data.manager.locale.LocaleManager
+import com.erubezhin.weather_sample_app.data.manager.locale.LocaleManagerImpl
 import com.erubezhin.weather_sample_app.data.model.main.settings.Language
 import com.erubezhin.weather_sample_app.data.model.main.settings.language.LanguageModel
 

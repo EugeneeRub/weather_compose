@@ -24,7 +24,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.google.accompanist.pager.ExperimentalPagerApi
-import com.erubezhin.weather_sample_app.feature.main.cityweather.CurrentCityWeather
+import com.erubezhin.weather_sample_app.feature.main.currentweather.CurrentCityWeather
 import com.erubezhin.weather_sample_app.feature.main.settings.SettingsScreen
 import com.erubezhin.weather_sample_app.feature.ui.theme.WeatherComposeTheme
 import com.erubezhin.weather_sample_app.feature.ui.theme.SeasonColors

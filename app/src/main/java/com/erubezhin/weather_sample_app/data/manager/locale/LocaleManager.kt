@@ -1,4 +1,4 @@
-package com.erubezhin.weather_sample_app.core.manager.locale
+package com.erubezhin.weather_sample_app.data.manager.locale
 
 import android.content.Context
 import com.erubezhin.weather_sample_app.data.model.main.settings.Language

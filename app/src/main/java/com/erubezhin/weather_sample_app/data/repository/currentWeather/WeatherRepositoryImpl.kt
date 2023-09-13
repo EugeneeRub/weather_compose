@@ -3,7 +3,7 @@ package com.erubezhin.weather_sample_app.data.repository.currentWeather
 import android.content.Context
 import com.erubezhin.weather_sample_app.core.platfrom.BaseRepository
 import com.erubezhin.weather_sample_app.core.platfrom.NetworkHandler
-import com.erubezhin.weather_sample_app.core.platfrom.RepositoryResponse
+import com.erubezhin.weather_sample_app.core.platfrom.Response
 import com.erubezhin.weather_sample_app.data.model.response.CurrentWeatherResponse
 import java.lang.Exception
 
@@ -18,9 +18,9 @@ class WeatherRepositoryImpl(context: Context) : BaseRepository(), WeatherReposit
 
     override fun getCurrentWeather(
         lat: Double, lon: Double
-    ): RepositoryResponse<CurrentWeatherResponse> = if (networkHandler.isNetworkAvailable()) {
+    ): Response<CurrentWeatherResponse> = if (networkHandler.isNetworkAvailable()) {
         request(service.getGeoDataByCoordinates(lat, lon))
     } else {
-        RepositoryResponse.Error(Exception("Internet not found"))
+        Response.Error(Exception("Internet not found"))
     }
 }

@@ -1,4 +1,4 @@
-package com.erubezhin.weather_sample_app.feature.main.cityweather.widgets
+package com.erubezhin.weather_sample_app.feature.main.currentweather.widgets
 
 import android.widget.Toast
 import androidx.compose.foundation.layout.padding
@@ -22,7 +22,7 @@ import com.erubezhin.weather_sample_app.feature.ui.theme.textPrimary
 import com.erubezhin.weather_sample_app.feature.ui.theme.textSecondary
 
 @Composable
-fun LastUpdatedTimeWidget(timeState: State<String>) {
+fun LastUpdatedTimeWidget(timeState: String) {
     Text(
         text = stringResource(id = R.string.last_updated),
         style = TextStyle(
@@ -31,7 +31,7 @@ fun LastUpdatedTimeWidget(timeState: State<String>) {
         ),
     )
     Text(
-        text = timeState.value,
+        text = timeState,
         modifier = Modifier.padding(top = 4.dp),
         style = TextStyle(
             color = MaterialTheme.colors.textSecondary,
@@ -44,20 +44,18 @@ fun LastUpdatedTimeWidget(timeState: State<String>) {
 }
 
 @Composable
-fun DayWidget(currentDay: State<String>) {
+fun DayWidget(day: String) {
     Text(
-        text = currentDay.value,
+        text = day,
         color = MaterialTheme.colors.textSecondary,
         fontSize = 22.sp,
     )
 }
 
 @Composable
-fun TemperatureWidget(currentTemperature: State<String>, textColor: Color) {
-    val temperature = currentTemperature.value
-
+fun TemperatureWidget(temperature: String, textColor: Color) {
     TextWidget(
-        text = "${temperature}°",
+        text = temperature,
         textStyle = TextStyle(
             color = textColor,
             fontSize = if (temperature.length > 2) 128.sp else 156.sp,
@@ -96,12 +94,12 @@ fun TextWidget(
 
 @Composable
 fun WeatherIconTypeWidget(
-    iconState: State<Int?>,
+    drawableId: Int?,
     modifier: Modifier = Modifier
 ) {
-    if (iconState.value == null) return
+    if (drawableId == null) return
     Icon(
-        painter = painterResource(id = iconState.value!!),
+        painter = painterResource(id = drawableId),
         modifier = modifier,
         contentDescription = "Weather icon type",
         tint = MaterialTheme.colors.textPrimary

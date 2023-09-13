@@ -1,24 +1,16 @@
 package com.erubezhin.weather_sample_app.core.interactor
 
-import com.erubezhin.weather_sample_app.core.platfrom.RepositoryResponse
+import com.erubezhin.weather_sample_app.core.platfrom.Response
 import kotlinx.coroutines.*
 
 abstract class UseCase<out Type, in Params> where Type : Any {
 
-    abstract suspend fun run(params: Params): RepositoryResponse<Type>
+    abstract suspend fun run(params: Params): Response<Type>
 
-    operator fun invoke(
-        params: Params,
-        scope: CoroutineScope,
-        onResult: (RepositoryResponse<Type>) -> Unit = {}
-    ) {
-        scope.launch(Dispatchers.Main) {
-            val deferred = async(Dispatchers.IO) {
-                run(params)
-            }
-            onResult(deferred.await())
+    protected suspend fun invoke(params: Params, dispatcher: CoroutineDispatcher): Response<Type> {
+        return withContext(dispatcher) {
+            async { run(params) }.await()
         }
     }
 
-    class None
 }

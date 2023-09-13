@@ -6,17 +6,14 @@ import retrofit2.http.GET
 import retrofit2.http.Headers
 import retrofit2.http.Query
 
-/** Retrofit API of the application. */
+/** Weather API of the application. */
 interface WeatherApi {
 
-    @GET(GEO_WEATHER)
+    @GET("weather")
     @Headers("Content-Type: application/json")
     fun getGeoDataByCoordinates(
         @Query("lat") lat: Double,
         @Query("lon") lon: Double
     ): Call<CurrentWeatherResponse>
 
-    companion object {
-        const val GEO_WEATHER = "weather"
-    }
 }
