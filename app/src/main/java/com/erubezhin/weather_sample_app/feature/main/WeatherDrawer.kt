@@ -8,7 +8,9 @@ import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.Favorite
 import androidx.compose.material.icons.rounded.Home
+import androidx.compose.material.icons.rounded.LocationOn
 import androidx.compose.material.icons.rounded.Settings
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -41,7 +43,8 @@ fun WeatherDrawer(
 ) {
     val seasonColorsData = remember { SeasonColors.getSeasonColors(Calendar.getInstance()) }
     val items = listOf(
-        NavDrawerItem.Home,
+        NavDrawerItem.TodayWeather,
+        NavDrawerItem.HourlyWeather,
         NavDrawerItem.Settings,
     )
 
@@ -181,14 +184,28 @@ fun WeatherDrawerItem(
 
 /** Holds information of navigation paths in [MainScreen]. */
 sealed class NavDrawerItem(val route: String, val icon: ImageVector, val titleRes: Int) {
-    object Home : NavDrawerItem("home_page", Icons.Rounded.Home, R.string.home)
-    object Settings : NavDrawerItem("settings_page", Icons.Rounded.Settings, R.string.settings)
+    object TodayWeather : NavDrawerItem("today_weather_page", Icons.Rounded.LocationOn, R.string.menu_item_today_weather)
+    object HourlyWeather : NavDrawerItem("hourly_weather_page", Icons.Rounded.Favorite, R.string.menu_item_hourly_weather)
+    object Settings : NavDrawerItem("settings_page", Icons.Rounded.Settings, R.string.menu_item_settings)
 }
 
-@Preview(name = "Weather drawer")
+@Preview(
+    name = "Weather drawer, locale - english",
+    locale = "en",
+)
 @Composable
 @ExperimentalMaterialApi
-fun DrawerPreview() {
+fun DrawerPreviewEN() {
+    WeatherDrawer(navController = rememberNavController())
+}
+
+@Preview(
+    name = "Weather drawer, locale - ukraine",
+    locale = "uk",
+)
+@Composable
+@ExperimentalMaterialApi
+fun DrawerPreviewUA() {
     WeatherDrawer(navController = rememberNavController())
 }
 
@@ -196,26 +213,26 @@ fun DrawerPreview() {
 @Composable
 @ExperimentalMaterialApi
 fun DrawerItemWinterPreview() {
-    WeatherDrawerItem(NavDrawerItem.Home, SeasonColors.WinterColors, selected = true) {}
+    WeatherDrawerItem(NavDrawerItem.TodayWeather, SeasonColors.WinterColors, selected = true) {}
 }
 
 @Preview(name = "Drawer item - Spring style")
 @Composable
 @ExperimentalMaterialApi
 fun DrawerItemSpringPreview() {
-    WeatherDrawerItem(NavDrawerItem.Home, SeasonColors.SpringColors, selected = true) {}
+    WeatherDrawerItem(NavDrawerItem.TodayWeather, SeasonColors.SpringColors, selected = true) {}
 }
 
 @Preview(name = "Drawer item - Summer style")
 @Composable
 @ExperimentalMaterialApi
 fun DrawerItemSummerPreview() {
-    WeatherDrawerItem(NavDrawerItem.Home, SeasonColors.SummerColors, selected = true) {}
+    WeatherDrawerItem(NavDrawerItem.TodayWeather, SeasonColors.SummerColors, selected = true) {}
 }
 
 @Preview(name = "Drawer item - Autumn style")
 @Composable
 @ExperimentalMaterialApi
 fun DrawerItemAutumnPreview() {
-    WeatherDrawerItem(NavDrawerItem.Home, SeasonColors.AutumnColors, selected = true) {}
+    WeatherDrawerItem(NavDrawerItem.TodayWeather, SeasonColors.AutumnColors, selected = true) {}
 }

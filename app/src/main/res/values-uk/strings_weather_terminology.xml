@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="terminology_min_max_temp">Низ./вис.</string>
+    <string name="terminology_sunrise">Світанок</string>
+    <string name="terminology_sunset">Захід</string>
+    <string name="terminology_wind">Вітер</string>
+    <string name="terminology_humidity">Вологість</string>
+    <string name="terminology_pressure">Тиск</string>
+    <string name="terminology_feels_like">Відчувається як</string>
+    <string name="terminology_visibility">Видимість</string>
+    <string name="terminology_mbar_format">%1$d мбар</string>
+    <string name="terminology_km_hour_format">%1$d км/год</string>
+
+    <string name="terminology_dense_fog">Густий туман</string>
+    <string name="terminology_thick_fog">Сильний туман</string>
+    <string name="terminology_moderate_fog">Помірний туман</string>
+    <string name="terminology_light_fog">Легкий туман</string>
+    <string name="terminology_very_light_fog">@string/terminology_light_fog</string>
+    <string name="terminology_light_mist">Легка мряка</string>
+    <string name="terminology_very_light_mist">@string/terminology_light_mist</string>
+    <string name="terminology_clear_air">Чиста видимість</string>
+    <string name="terminology_very_clear_air">@string/terminology_clear_air</string>
+</resources>

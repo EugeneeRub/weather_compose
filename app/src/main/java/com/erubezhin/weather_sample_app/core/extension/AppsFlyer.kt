@@ -49,7 +49,7 @@ data class AppsFlyerLocation(
 )
 
 enum class Screens {
-    Main, Settings
+    Today, Hourly, Settings
 }
 
 enum class Dialogs {

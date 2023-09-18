@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="terminology_feels_like">Feels like</string>
+    <string name="terminology_sunrise">Sunrise</string>
+    <string name="terminology_sunset">Sunset</string>
+    <string name="terminology_min_max_temp">Low/high</string>
+    <string name="terminology_wind">Wind</string>
+    <string name="terminology_humidity">Humidity</string>
+    <string name="terminology_pressure">Pressure</string>
+    <string name="terminology_visibility">Visibility</string>
+    <string name="terminology_mbar_format">%1$d mbar</string>
+    <string name="terminology_km_hour_format">%1$d km/hr</string>
+
+    <string name="terminology_dense_fog">Dense fog</string>
+    <string name="terminology_thick_fog">Thick fog</string>
+    <string name="terminology_moderate_fog">Moderate fog</string>
+    <string name="terminology_light_fog">Light fog</string>
+    <string name="terminology_very_light_fog">@string/terminology_light_fog</string>
+    <string name="terminology_light_mist">Light mist</string>
+    <string name="terminology_very_light_mist">@string/terminology_light_mist</string>
+    <string name="terminology_clear_air">Clear air</string>
+    <string name="terminology_very_clear_air">@string/terminology_clear_air</string>
+</resources>

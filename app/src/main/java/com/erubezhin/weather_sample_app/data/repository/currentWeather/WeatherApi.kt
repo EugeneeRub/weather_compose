@@ -1,6 +1,7 @@
 package com.erubezhin.weather_sample_app.data.repository.currentWeather
 
-import com.erubezhin.weather_sample_app.data.model.response.CurrentWeatherResponse
+import com.erubezhin.weather_sample_app.data.model.response.HourlyResponse
+import com.erubezhin.weather_sample_app.data.model.response.TodayResponse
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Headers
@@ -11,9 +12,16 @@ interface WeatherApi {
 
     @GET("weather")
     @Headers("Content-Type: application/json")
-    fun getGeoDataByCoordinates(
+    fun getTodayWeather(
         @Query("lat") lat: Double,
         @Query("lon") lon: Double
-    ): Call<CurrentWeatherResponse>
+    ): Call<TodayResponse>
+
+    @GET("forecast")
+    @Headers("Content-Type: application/json")
+    fun getHourlyWeather(
+        @Query("lat") lat: Double,
+        @Query("lon") lon: Double
+    ): Call<HourlyResponse>
 
 }

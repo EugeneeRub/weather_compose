@@ -4,7 +4,7 @@ import android.content.Context
 import com.erubezhin.weather_sample_app.core.platfrom.BaseRepository
 import com.erubezhin.weather_sample_app.core.platfrom.NetworkHandler
 import com.erubezhin.weather_sample_app.core.platfrom.Response
-import com.erubezhin.weather_sample_app.data.model.response.CurrentWeatherResponse
+import com.erubezhin.weather_sample_app.data.model.response.TodayResponse
 import java.lang.Exception
 
 /**
@@ -16,10 +16,10 @@ class WeatherRepositoryImpl(context: Context) : BaseRepository(), WeatherReposit
     private val networkHandler = NetworkHandler(context)
     private val service = WeatherApiService()
 
-    override fun getCurrentWeather(
+    override fun getTodayWeather(
         lat: Double, lon: Double
-    ): Response<CurrentWeatherResponse> = if (networkHandler.isNetworkAvailable()) {
-        request(service.getGeoDataByCoordinates(lat, lon))
+    ): Response<TodayResponse> = if (networkHandler.isNetworkAvailable()) {
+        request(service.getTodayWeather(lat, lon))
     } else {
         Response.Error(Exception("Internet not found"))
     }

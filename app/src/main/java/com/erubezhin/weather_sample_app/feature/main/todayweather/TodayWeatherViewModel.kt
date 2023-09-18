@@ -1,4 +1,4 @@
-package com.erubezhin.weather_sample_app.feature.main.currentweather
+package com.erubezhin.weather_sample_app.feature.main.todayweather
 
 import android.Manifest
 import android.content.Context
@@ -23,9 +23,10 @@ import com.erubezhin.weather_sample_app.data.manager.locale.LocaleManager
 import com.erubezhin.weather_sample_app.data.manager.locale.LocaleManagerImpl
 import com.erubezhin.weather_sample_app.data.manager.temperature.TemperatureManager
 import com.erubezhin.weather_sample_app.data.manager.temperature.TemperatureManagerImpl
+import com.erubezhin.weather_sample_app.data.model.response.TodayResponse
 import com.erubezhin.weather_sample_app.data.repository.currentWeather.WeatherRepositoryImpl
-import com.erubezhin.weather_sample_app.feature.main.currentweather.usecase.CurrentWeatherUseCase
-import com.erubezhin.weather_sample_app.feature.main.currentweather.usecase.CurrentWeatherUseCaseImpl
+import com.erubezhin.weather_sample_app.feature.main.todayweather.usecase.TodayWeatherUseCase
+import com.erubezhin.weather_sample_app.feature.main.todayweather.usecase.TodayWeatherUseCaseImpl
 import com.erubezhin.weather_sample_app.feature.main.settings.SettingsScreen
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -39,16 +40,16 @@ import java.util.*
  * @property temperatureManager helps to work with the temperature of the application.
  * @param localeManager helps to work with the locale of the application.
  */
-class CityWeatherViewModel(
-    private val weatherUseCase: CurrentWeatherUseCase,
+class TodayWeatherViewModel(
+    private val weatherUseCase: TodayWeatherUseCase,
     private val temperatureManager: TemperatureManager,
     localeManager: LocaleManager,
 ) : ViewModel() {
     private var currentDay: String
 
-    private val _event: MutableState<DataState<CurrentWeatherModel>> =
+    private val _event: MutableState<DataState<TodayWeatherModel>> =
         mutableStateOf(DataState.Loading)
-    val event: State<DataState<CurrentWeatherModel>>
+    val event: State<DataState<TodayWeatherModel>>
         get() = _event
 
     private val _error: MutableState<Throwable?> = mutableStateOf(null)
@@ -86,24 +87,10 @@ class CityWeatherViewModel(
 
     private fun loadCurrentWeather(context: Context, lat: Double, lon: Double) {
         viewModelScope.launch(Dispatchers.Main) {
-            val response = weatherUseCase.loadCurrentWeather(CurrentWeatherUseCase.Params(lat, lon))
+            val response = weatherUseCase.loadCurrentWeather(TodayWeatherUseCase.Params(lat, lon))
             when (response) {
                 is Response.Result -> {
-                    _event.value = with(response.result) {
-                        DataState.Success(
-                            CurrentWeatherModel(
-                                day = currentDay,
-                                temperature = main.temp.kelvinToTemperatureType(
-                                    temperatureManager.getTemperatureType()
-                                ),
-                                city = cityName,
-                                lastUpdatedTime = Calendar.getInstance().time.toStringTime(),
-                                weatherIconId = getWeatherIconById(
-                                    weather.firstOrNull()?.icon ?: ""
-                                )
-                            )
-                        )
-                    }
+                    _event.value = DataState.Success(response.result.toTodayWeatherModel())
 
                     AppsFlyerLib.getInstance().logLocation(
                         context,
@@ -138,12 +125,37 @@ class CityWeatherViewModel(
         else -> R.drawable.ic_sunny
     }
 
+    private fun TodayResponse.toTodayWeatherModel(): TodayWeatherModel {
+        val tempType = temperatureManager.getTemperatureType()
+
+        return TodayWeatherModel(
+            day = currentDay,
+            temperature = main.temp.kelvinToTemperatureType(tempType),
+            tempFeelsLike = main.feelsLikeTemp.kelvinToTemperatureType(tempType),
+            city = cityName,
+            lastUpdatedTime = Calendar.getInstance().time.toStringTime(),
+            weatherIconId = getWeatherIconById(
+                weather.firstOrNull()?.icon ?: ""
+            ),
+            details = DetailsModel(
+                tempMin = main.tempMin.kelvinToTemperatureType(tempType),
+                tempMax = main.tempMax.kelvinToTemperatureType(tempType),
+                wind = (wind.speed * 3.293).toInt(),
+                pressure = main.pressure,
+                humidity = main.humidity,
+                sunrise = sysModel.sunrise,
+                sunset = sysModel.sunset,
+                visibility = DetailsModel.Visibility.getVisibility(visibility)
+            ),
+        )
+    }
+
     companion object {
-        /** Provides factory of the [CityWeatherViewModel]. */
+        /** Provides factory of the [TodayWeatherViewModel]. */
         fun factory(applicationContext: Context) = object : ViewModelProvider.Factory {
             override fun <T : ViewModel> create(modelClass: Class<T>): T {
-                return CityWeatherViewModel(
-                    weatherUseCase = CurrentWeatherUseCaseImpl(
+                return TodayWeatherViewModel(
+                    weatherUseCase = TodayWeatherUseCaseImpl(
                         repository = WeatherRepositoryImpl(applicationContext),
                         dispatcher = Dispatchers.IO,
                     ),

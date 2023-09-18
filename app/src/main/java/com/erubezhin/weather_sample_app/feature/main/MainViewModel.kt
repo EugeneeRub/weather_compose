@@ -8,7 +8,7 @@ import com.erubezhin.weather_sample_app.data.manager.locale.LocaleManagerImpl
 import com.erubezhin.weather_sample_app.data.model.main.settings.Language
 
 /**
- * Main ViewModel that helps to work [MainScreen].
+ * Today ViewModel that helps to work [MainScreen].
  *
  * @property localeManager helps to setup the locale of the application.
  */

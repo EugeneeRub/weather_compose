@@ -1,7 +1,12 @@
-package com.erubezhin.weather_sample_app.feature.main.currentweather.widgets
+package com.erubezhin.weather_sample_app.feature.main.todayweather.widgets
 
 import android.widget.Toast
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.Card
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
@@ -20,6 +25,7 @@ import androidx.compose.ui.unit.sp
 import com.erubezhin.weather_sample_app.R
 import com.erubezhin.weather_sample_app.feature.ui.theme.textPrimary
 import com.erubezhin.weather_sample_app.feature.ui.theme.textSecondary
+import com.erubezhin.weather_sample_app.feature.ui.theme.viewSelected
 
 @Composable
 fun LastUpdatedTimeWidget(timeState: String) {
@@ -104,6 +110,27 @@ fun WeatherIconTypeWidget(
         contentDescription = "Weather icon type",
         tint = MaterialTheme.colors.textPrimary
     )
+}
+
+@Composable
+fun DetailsWeatherItem(
+   modifier: Modifier = Modifier,
+   content: @Composable () -> Unit,
+) {
+    Card(
+        modifier = modifier,
+        shape = RoundedCornerShape(8.dp),
+        backgroundColor = MaterialTheme.colors.viewSelected,
+        elevation = 0.dp,
+    ) {
+        Row(
+            horizontalArrangement = Arrangement.SpaceBetween,
+            modifier = Modifier
+                .padding(horizontal = 16.dp, vertical = 12.dp),
+        ) {
+            content()
+        }
+    }
 }
 
 @Composable

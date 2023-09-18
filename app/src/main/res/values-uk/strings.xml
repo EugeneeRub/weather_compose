@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="settings">Налаштування</string>
-    <string name="home">Головна</string>
+    <string name="menu_item_settings">Налаштування</string>
+    <string name="menu_item_today_weather">Cьогодні</string>
+    <string name="menu_item_hourly_weather">Погодинно</string>
     <string name="developed_by">Розробник</string>
     <string name="evgenij_rubezhin">Євгеній Рубєжин</string>
     <string name="last_updated">Оновлено</string>

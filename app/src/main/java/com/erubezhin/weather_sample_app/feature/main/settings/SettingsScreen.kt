@@ -51,7 +51,6 @@ fun SettingsScreen(
     val (isShowLanguageDialog, setLanguageDialog) = remember { mutableStateOf(false) }
     val (isShowTemperatureDialog, setTemperatureDialog) = remember { mutableStateOf(false) }
 
-
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -59,7 +58,7 @@ fun SettingsScreen(
     ) {
         Spacer(modifier = Modifier.padding(top = 64.dp))
         Text(
-            text = stringResource(id = R.string.settings),
+            text = stringResource(id = R.string.menu_item_settings),
             color = MaterialTheme.colors.textSecondary,
             fontSize = 22.sp,
             textAlign = TextAlign.Center,
@@ -102,7 +101,7 @@ fun ShowLanguageView(
     languageState: State<Language?>,
     onClick: () -> Unit,
 ) {
-    val language = if (languageState.value != null) languageState.value!! else return
+    val language = languageState.value ?: return
 
     Card(
         backgroundColor = MaterialTheme.colors.viewSelected,
@@ -138,7 +137,8 @@ fun ShowLanguageView(
             ) {
                 Text(
                     text = stringResource(id = R.string.language),
-                    color = MaterialTheme.colors.textPrimary
+                    color = MaterialTheme.colors.textPrimary,
+
                 )
                 Text(
                     text = language.title,
@@ -156,8 +156,7 @@ fun ShowTemperatureTypeView(
     temperatureTypeState: State<TemperatureType?>,
     onClick: () -> Unit,
 ) {
-    val temperatureType =
-        if (temperatureTypeState.value != null) temperatureTypeState.value!! else return
+    val temperatureType = temperatureTypeState.value ?: return
 
     Card(
         backgroundColor = MaterialTheme.colors.viewSelected,
