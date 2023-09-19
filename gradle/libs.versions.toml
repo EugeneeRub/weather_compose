@@ -1,0 +1,58 @@
+[versions]
+ktx = "1.12.0"
+ktx-lifecycle = "2.6.2"
+kotlin-reflect = "1.8.10"
+retrofit = "2.9.0"
+rxjava3 = "3.0.0"
+compose-version = "1.5.1"
+compose-livedata = "1.4.0"
+compose-navigation = "2.7.2"
+compose-activity = "1.7.2"
+compose-constraintlayout = "1.0.1"
+accompanist-pager = "0.20.0"
+accompanist-systemuicontroller = "0.31.0-alpha"
+gms-location = "21.0.1"
+appsflyer = "6.9.0"
+test-junit = "4.13.2"
+test-junit-ext = "4.13.2"
+test-espresso = "4.13.2"
+# Plugins versions
+android-application = "7.4.1"
+android-library = "7.4.1"
+kotlin-android = "1.8.0"
+
+[libraries]
+androidx-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "ktx" }
+androidx-ktx-lifecycle = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "ktx-lifecycle" }
+
+androidx-compose-ui = { group = "androidx.compose.ui", name = "ui", version.ref = "compose-version" }
+androidx-compose-ui-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview", version.ref = "compose-version" }
+androidx-compose-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling", version.ref = "compose-version" }
+androidx-compose-ui-test = { group = "androidx.compose.ui", name = "ui-test-junit4", version.ref = "compose-version" }
+androidx-compose-material = { group = "androidx.compose.material", name = "material", version.ref = "compose-version" }
+androidx-compose-runtime-livedata = { group = "androidx.compose.runtime", name = "runtime-livedata", version.ref = "compose-livedata" }
+androidx-compose-activity = { group = "androidx.activity", name = "activity-compose", version.ref = "compose-activity" }
+androidx-compose-navigation = { group = "androidx.navigation", name = "navigation-compose", version.ref = "compose-navigation" }
+androidx-compose-constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout-compose", version.ref = "compose-constraintlayout" }
+
+retrofit = { group = "com.squareup.retrofit2", name = "retrofit", version.ref = "retrofit" }
+retrofit-gson = { group = "com.squareup.retrofit2", name = "converter-gson", version.ref = "retrofit" }
+
+rxjava3 = { group = "io.reactivex.rxjava3", name = "rxjava", version.ref = "rxjava3" }
+rxjava3-android = { group = "io.reactivex.rxjava3", name = "rxandroid", version.ref = "rxjava3" }
+
+accompanist-pager = { group = "com.google.accompanist", name = "accompanist-pager", version.ref = "accompanist-pager" }
+accompanist-systemuicontroller = { group = "com.google.accompanist", name = "accompanist-systemuicontroller", version.ref = "accompanist-systemuicontroller" }
+
+gms-location = { group = "com.google.android.gms", name = "play-services-location", version.ref = "gms-location" }
+kotlin-reflect = { group = "org.jetbrains.kotlin", name = "kotlin-reflect", version.ref = "kotlin-reflect" }
+appsflyer = { group = "com.appsflyer", name = "af-android-sdk", version.ref = "appsflyer" }
+
+test-junit = { group = "junit", name = "junit", version.ref = "test-junit" }
+test-junit-ext = { group = "androidx.test.ext", name = "junit", version.ref = "test-junit-ext" }
+test-espresso = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "test-espresso" }
+
+[plugins]
+android-application = { id = "com.android.application", version.ref = "android-application" }
+android-library = { id = "com.android.library", version.ref = "android-library" }
+kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin-android" }
