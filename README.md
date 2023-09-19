@@ -1,5 +1,7 @@
 # Compose Weather
 
+![CW logo](./pictures/pic0.jpg)
+
 Small project to test how Jetpack Compose works.\
 Was used default pattern of app development.
 
