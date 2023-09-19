@@ -1,14 +1,14 @@
 # Compose Weather
 
-![CW logo](./pictures/pic0.jpg)
+![CW logo](images/pic0.jpg)
 
 Small project to test how Jetpack Compose works.\
 Was used default pattern of app development.
 
 | Main Screen                         | Settings Screen                         | Drawer Part                         |
 |-------------------------------------|-----------------------------------------|-------------------------------------|
-| ![Main Screen](./pictures/pic1.jpg) | ![Settings Screen](./pictures/pic2.jpg) | ![Drawer Part](./pictures/pic3.jpg) |
+| ![Main Screen](images/pic1.jpg) | ![Settings Screen](images/pic2.jpg) | ![Drawer Part](images/pic3.jpg) |
 
 | Language Dialog                         | Temperature Dialog                         |
 |-----------------------------------------|--------------------------------------------|
-| ![Language Dialog](./pictures/pic4.jpg) | ![Temperature Dialog](./pictures/pic5.jpg) |
+| ![Language Dialog](images/pic4.jpg) | ![Temperature Dialog](images/pic5.jpg) |
