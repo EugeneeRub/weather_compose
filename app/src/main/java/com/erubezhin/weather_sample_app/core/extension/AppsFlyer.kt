@@ -10,35 +10,50 @@ private const val DIALOG_OPENED = "DIALOG OPENED"
 private const val LANGUAGE_CHANGE = "LANGUAGE CHANGE"
 private const val TEMPERATURE_CHANGE = "TEMPERATURE CHANGE"
 
-//Content
+// Content
 private const val LANGUAGE = "LANGUAGE"
 private const val TEMPERATURE = "TEMPERATURE"
 
-fun AppsFlyerLib.logScreenOpen(context: Context, screen: Screens) {
+fun AppsFlyerLib.logScreenOpen(
+    context: Context,
+    screen: Screens,
+) {
     logEvent(context, SCREEN_OPENED, mapOf(AFInAppEventParameterName.CONTENT_TYPE to screen))
 }
 
-fun AppsFlyerLib.logDialogOpen(context: Context, dialog: Dialogs) {
+fun AppsFlyerLib.logDialogOpen(
+    context: Context,
+    dialog: Dialogs,
+) {
     logEvent(context, DIALOG_OPENED, mapOf(AFInAppEventParameterName.CONTENT_TYPE to dialog))
 }
 
-fun AppsFlyerLib.logLanguageChange(context: Context, lang: String) {
+fun AppsFlyerLib.logLanguageChange(
+    context: Context,
+    lang: String,
+) {
     logEvent(context, LANGUAGE_CHANGE, mapOf(LANGUAGE to lang))
 }
 
-fun AppsFlyerLib.logTemperatureChange(context: Context, temperature: String) {
+fun AppsFlyerLib.logTemperatureChange(
+    context: Context,
+    temperature: String,
+) {
     logEvent(context, TEMPERATURE_CHANGE, mapOf(TEMPERATURE to temperature))
 }
 
-fun AppsFlyerLib.logLocation(context: Context, location: AppsFlyerLocation) {
+fun AppsFlyerLib.logLocation(
+    context: Context,
+    location: AppsFlyerLocation,
+) {
     logEvent(
         context,
         AFInAppEventType.LOCATION_CHANGED,
         mapOf(
             AFInAppEventParameterName.CITY to location.city,
             AFInAppEventParameterName.LATITUDE to location.latitude,
-            AFInAppEventParameterName.LONGTITUDE to location.longitude
-        )
+            AFInAppEventParameterName.LONGTITUDE to location.longitude,
+        ),
     )
 }
 
@@ -49,10 +64,12 @@ data class AppsFlyerLocation(
 )
 
 enum class Screens {
-    Today, Hourly, Settings
+    Today,
+    Hourly,
+    Settings,
 }
 
 enum class Dialogs {
-    Language, Temperature
+    Language,
+    Temperature,
 }
-

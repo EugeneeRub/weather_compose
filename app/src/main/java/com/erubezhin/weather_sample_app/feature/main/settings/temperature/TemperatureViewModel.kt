@@ -30,9 +30,10 @@ class TemperatureViewModel(
 
     private fun prepareTemperaturesList() {
         val selectedTemperature = temperatureManager.getTemperatureType()
-        listOfTemperatures = TemperatureType::class.nestedClasses
-            .mapNotNull { it.objectInstance as? TemperatureType }
-            .map { TemperatureModel(it.type == selectedTemperature, it) }
+        listOfTemperatures =
+            TemperatureType::class.nestedClasses
+                .mapNotNull { it.objectInstance as? TemperatureType }
+                .map { TemperatureModel(it.type == selectedTemperature, it) }
 
         _temperatures.value = listOfTemperatures
     }
@@ -48,10 +49,11 @@ class TemperatureViewModel(
 
     companion object {
         /** Provides factory of the [TemperatureViewModel]. */
-        fun factory(applicationContext: Context) = object : ViewModelProvider.Factory {
-            override fun <T : ViewModel> create(modelClass: Class<T>): T {
-                return TemperatureViewModel(TemperatureManagerImpl(applicationContext)) as T
+        fun factory(applicationContext: Context) =
+            object : ViewModelProvider.Factory {
+                override fun <T : ViewModel> create(modelClass: Class<T>): T {
+                    return TemperatureViewModel(TemperatureManagerImpl(applicationContext)) as T
+                }
             }
-        }
     }
 }

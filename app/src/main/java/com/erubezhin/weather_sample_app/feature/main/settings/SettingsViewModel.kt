@@ -24,7 +24,6 @@ class SettingsViewModel(
     localeManager: LocaleManager,
     temperatureManager: TemperatureManager,
 ) : ViewModel() {
-
     private val _selectedLanguage = MutableLiveData<Language>()
     val selectedLanguage: LiveData<Language>
         get() = _selectedLanguage
@@ -45,7 +44,10 @@ class SettingsViewModel(
      * @param context for log the events.
      * @param language required language to be changed in app.
      */
-    fun updateLocale(context: Context, language: Language) {
+    fun updateLocale(
+        context: Context,
+        language: Language,
+    ) {
         AppsFlyerLib.getInstance().logTemperatureChange(context, language.javaClass.simpleName)
         _selectedLanguage.value = language
     }
@@ -56,20 +58,24 @@ class SettingsViewModel(
      * @param context for log the events.
      * @param tempType required temperature type to be changed in app.
      */
-    fun updateTemperatureType(context: Context, tempType: TemperatureType) {
+    fun updateTemperatureType(
+        context: Context,
+        tempType: TemperatureType,
+    ) {
         AppsFlyerLib.getInstance().logTemperatureChange(context, tempType.javaClass.simpleName)
         _selectedTemperatureType.value = tempType
     }
 
     companion object {
         /** Provides factory of the [SettingsViewModel]. */
-        fun factory(applicationContext: Context) = object : ViewModelProvider.Factory {
-            override fun <T : ViewModel> create(modelClass: Class<T>): T {
-                return SettingsViewModel(
-                    LocaleManagerImpl(applicationContext),
-                    TemperatureManagerImpl(applicationContext),
-                ) as T
+        fun factory(applicationContext: Context) =
+            object : ViewModelProvider.Factory {
+                override fun <T : ViewModel> create(modelClass: Class<T>): T {
+                    return SettingsViewModel(
+                        LocaleManagerImpl(applicationContext),
+                        TemperatureManagerImpl(applicationContext),
+                    ) as T
+                }
             }
-        }
     }
 }

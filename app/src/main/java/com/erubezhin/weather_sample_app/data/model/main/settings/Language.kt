@@ -7,10 +7,11 @@ sealed class Language(val title: String, val code: String) {
 
     companion object {
         /** Via the provided [code] value returns required [Language]. */
-        fun getLanguageByCode(code: String): Language = when (code) {
-            English.code -> English
-            Ukrainian.code -> Ukrainian
-            else -> English
-        }
+        fun getLanguageByCode(code: String): Language =
+            when (code) {
+                English.code -> English
+                Ukrainian.code -> Ukrainian
+                else -> English
+            }
     }
 }

@@ -30,15 +30,19 @@ class LanguageViewModel(
 
     private fun prepareLocaleList() {
         val selectedLanguageCode = localeManager.getLanguageCode()
-        listOfLanguages = Language::class.nestedClasses
-            .mapNotNull { it.objectInstance as? Language }
-            .map { LanguageModel(it.code == selectedLanguageCode, it) }
+        listOfLanguages =
+            Language::class.nestedClasses
+                .mapNotNull { it.objectInstance as? Language }
+                .map { LanguageModel(it.code == selectedLanguageCode, it) }
 
         _languages.value = listOfLanguages
     }
 
     /** Updates application [context] locale via [language]. */
-    fun updateLanguage(context: Context, language: Language) {
+    fun updateLanguage(
+        context: Context,
+        language: Language,
+    ) {
         localeManager.setLanguageCode(language.code)
         localeManager.updateContextLocale(context, language)
         listOfLanguages.forEach {
@@ -49,10 +53,11 @@ class LanguageViewModel(
 
     companion object {
         /** Provides factory of the [LanguageViewModel]. */
-        fun factory(applicationContext: Context) = object : ViewModelProvider.Factory {
-            override fun <T : ViewModel> create(modelClass: Class<T>): T {
-                return LanguageViewModel(LocaleManagerImpl(applicationContext)) as T
+        fun factory(applicationContext: Context) =
+            object : ViewModelProvider.Factory {
+                override fun <T : ViewModel> create(modelClass: Class<T>): T {
+                    return LanguageViewModel(LocaleManagerImpl(applicationContext)) as T
+                }
             }
-        }
     }
 }

@@ -8,5 +8,5 @@ data class TodayResponse(
     @SerializedName("wind") val wind: Wind,
     @SerializedName("sys") val sysModel: SysModel,
     @SerializedName("visibility") val visibility: Int,
-    @SerializedName("name") val cityName: String
+    @SerializedName("name") val cityName: String,
 )

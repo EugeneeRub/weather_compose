@@ -15,7 +15,6 @@ import com.erubezhin.weather_sample_app.data.model.main.settings.Language
 class MainViewModel(
     private val localeManager: LocaleManager,
 ) : ViewModel() {
-
     /**
      * Setup [context] resources locale to use the saved language.
      *
@@ -30,10 +29,11 @@ class MainViewModel(
 
     companion object {
         /** Provides factory of the [MainViewModel]. */
-        fun factory(applicationContext: Context) = object : ViewModelProvider.Factory {
-            override fun <T : ViewModel> create(modelClass: Class<T>): T {
-                return MainViewModel(LocaleManagerImpl(applicationContext)) as T
+        fun factory(applicationContext: Context) =
+            object : ViewModelProvider.Factory {
+                override fun <T : ViewModel> create(modelClass: Class<T>): T {
+                    return MainViewModel(LocaleManagerImpl(applicationContext)) as T
+                }
             }
-        }
     }
 }

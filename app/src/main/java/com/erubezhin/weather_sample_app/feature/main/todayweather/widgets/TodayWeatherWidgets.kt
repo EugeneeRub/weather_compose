@@ -3,7 +3,6 @@ package com.erubezhin.weather_sample_app.feature.main.todayweather.widgets
 import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
@@ -23,7 +22,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.erubezhin.weather_sample_app.R
-import com.erubezhin.weather_sample_app.feature.ui.theme.textPrimary
+import com.erubezhin.weather_sample_app.feature.ui.theme.iconTint
 import com.erubezhin.weather_sample_app.feature.ui.theme.textSecondary
 import com.erubezhin.weather_sample_app.feature.ui.theme.viewSelected
 
@@ -31,21 +30,23 @@ import com.erubezhin.weather_sample_app.feature.ui.theme.viewSelected
 fun LastUpdatedTimeWidget(timeState: String) {
     Text(
         text = stringResource(id = R.string.last_updated),
-        style = TextStyle(
-            color = MaterialTheme.colors.textSecondary,
-            fontSize = 16.sp,
-        ),
+        style =
+            TextStyle(
+                color = MaterialTheme.colors.textSecondary,
+                fontSize = 16.sp,
+            ),
     )
     Text(
         text = timeState,
         modifier = Modifier.padding(top = 4.dp),
-        style = TextStyle(
-            color = MaterialTheme.colors.textSecondary,
-            fontSize = 32.sp,
-            fontFamily = FontFamily.Default,
-            fontWeight = FontWeight.Light,
-            letterSpacing = 0.sp,
-        ),
+        style =
+            TextStyle(
+                color = MaterialTheme.colors.textSecondary,
+                fontSize = 32.sp,
+                fontFamily = FontFamily.Default,
+                fontWeight = FontWeight.Light,
+                letterSpacing = 0.sp,
+            ),
     )
 }
 
@@ -59,16 +60,20 @@ fun DayWidget(day: String) {
 }
 
 @Composable
-fun TemperatureWidget(temperature: String, textColor: Color) {
+fun TemperatureWidget(
+    temperature: String,
+    textColor: Color,
+) {
     TextWidget(
         text = temperature,
-        textStyle = TextStyle(
-            color = textColor,
-            fontSize = if (temperature.length > 2) 128.sp else 156.sp,
-            fontFamily = FontFamily.Default,
-            fontWeight = FontWeight.Light,
-            letterSpacing = 0.sp,
-        ),
+        textStyle =
+            TextStyle(
+                color = textColor,
+                fontSize = if (temperature.length > 2) 128.sp else 156.sp,
+                fontFamily = FontFamily.Default,
+                fontWeight = FontWeight.Light,
+                letterSpacing = 0.sp,
+            ),
     )
 }
 
@@ -101,21 +106,21 @@ fun TextWidget(
 @Composable
 fun WeatherIconTypeWidget(
     drawableId: Int?,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     if (drawableId == null) return
     Icon(
         painter = painterResource(id = drawableId),
         modifier = modifier,
         contentDescription = "Weather icon type",
-        tint = MaterialTheme.colors.textPrimary
+        tint = MaterialTheme.colors.iconTint,
     )
 }
 
 @Composable
 fun DetailsWeatherItem(
-   modifier: Modifier = Modifier,
-   content: @Composable () -> Unit,
+    modifier: Modifier = Modifier,
+    content: @Composable () -> Unit,
 ) {
     Card(
         modifier = modifier,
@@ -125,8 +130,9 @@ fun DetailsWeatherItem(
     ) {
         Row(
             horizontalArrangement = Arrangement.SpaceBetween,
-            modifier = Modifier
-                .padding(horizontal = 16.dp, vertical = 12.dp),
+            modifier =
+                Modifier
+                    .padding(horizontal = 16.dp, vertical = 12.dp),
         ) {
             content()
         }

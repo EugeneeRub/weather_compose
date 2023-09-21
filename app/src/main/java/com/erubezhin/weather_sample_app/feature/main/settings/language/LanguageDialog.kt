@@ -18,23 +18,24 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.appsflyer.AppsFlyerLib
+import com.erubezhin.weather_sample_app.R
 import com.erubezhin.weather_sample_app.core.extension.Dialogs
 import com.erubezhin.weather_sample_app.core.extension.logDialogOpen
 import com.erubezhin.weather_sample_app.data.model.main.settings.Language
 import com.erubezhin.weather_sample_app.data.model.main.settings.language.LanguageModel
 import com.erubezhin.weather_sample_app.feature.ui.theme.*
-import com.erubezhin.weather_sample_app.R
 import java.util.*
 
 @ExperimentalMaterialApi
 @Composable
 fun LanguageDialog(
     isShowDialog: Boolean,
-    viewModel: LanguageViewModel = viewModel(
-        factory = LanguageViewModel.factory(LocalContext.current.applicationContext),
-    ),
+    viewModel: LanguageViewModel =
+        viewModel(
+            factory = LanguageViewModel.factory(LocalContext.current.applicationContext),
+        ),
     setShowDialog: (Boolean) -> Unit,
-    onLanguageSelected: (Language) -> Unit
+    onLanguageSelected: (Language) -> Unit,
 ) {
     if (isShowDialog) {
         AppsFlyerLib.getInstance().logDialogOpen(LocalContext.current, Dialogs.Language)
@@ -44,7 +45,7 @@ fun LanguageDialog(
         Dialog(
             onDismissRequest = {
                 setShowDialog(false)
-            }
+            },
         ) {
             Surface(
                 shape = RoundedCornerShape(12.dp),
@@ -58,7 +59,7 @@ fun LanguageDialog(
                         stringResource(id = R.string.choose_language),
                         modifier = Modifier.padding(bottom = 8.dp),
                         color = MaterialTheme.colors.textPrimary,
-                        fontFamily = moonFontFamily
+                        fontFamily = moonFontFamily,
                     )
                     viewModel.languages.observeAsState().value?.forEach { item ->
                         LanguageDialogItem(
@@ -89,20 +90,22 @@ fun LanguageDialogItem(
         backgroundColor = MaterialTheme.colors.viewSelected,
         elevation = 0.dp,
         shape = RoundedCornerShape(8.dp),
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(56.dp)
-            .padding(top = 8.dp, start = 8.dp, end = 8.dp),
+        modifier =
+            Modifier
+                .fillMaxWidth()
+                .height(56.dp)
+                .padding(top = 8.dp, start = 8.dp, end = 8.dp),
         onClick = {
             onClick(model.locale)
-        }
+        },
     ) {
         Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 16.dp, vertical = 8.dp),
+            modifier =
+                Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp, vertical = 8.dp),
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.SpaceBetween
+            horizontalArrangement = Arrangement.SpaceBetween,
         ) {
             Text(
                 text = model.locale.title,
@@ -112,7 +115,7 @@ fun LanguageDialogItem(
                 Image(
                     imageVector = Icons.Rounded.Done,
                     colorFilter = ColorFilter.tint(seasonColors.wavePrimary),
-                    contentDescription = "Icon selected"
+                    contentDescription = "Icon selected",
                 )
             }
         }

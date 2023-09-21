@@ -17,20 +17,21 @@ import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.navigation.NavHostController
 import com.erubezhin.weather_sample_app.feature.Screen
-import com.erubezhin.weather_sample_app.feature.ui.theme.lombokFontFamily
-import com.erubezhin.weather_sample_app.feature.ui.theme.textSecondary
 import com.erubezhin.weather_sample_app.feature.common.WavesBackground
 import com.erubezhin.weather_sample_app.feature.ui.theme.SeasonColors
+import com.erubezhin.weather_sample_app.feature.ui.theme.lombokFontFamily
+import com.erubezhin.weather_sample_app.feature.ui.theme.textSecondary
 import kotlinx.coroutines.delay
 import java.util.*
 
 @Composable
 fun AnimatedSplashScreen(navigation: NavHostController) {
     var startAnimation by remember { mutableStateOf(false) }
-    val alphaAnim = animateFloatAsState(
-        targetValue = if (startAnimation) 1f else 0f,
-        animationSpec = tween(500)
-    )
+    val alphaAnim =
+        animateFloatAsState(
+            targetValue = if (startAnimation) 1f else 0f,
+            animationSpec = tween(500),
+        )
 
     LaunchedEffect(key1 = true) {
         startAnimation = true
@@ -46,26 +47,28 @@ fun SplashScreen(alpha: Float = 1f) {
     val seasonColorsData = remember { SeasonColors.getSeasonColors(Calendar.getInstance()) }
 
     ConstraintLayout(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(MaterialTheme.colors.background)
-            .alpha(alpha),
+        modifier =
+            Modifier
+                .fillMaxSize()
+                .background(MaterialTheme.colors.background)
+                .alpha(alpha),
     ) {
         val (textMain) = createRefs()
 
         Text(
-            modifier = Modifier
-                .padding(bottom = 128.dp)
-                .constrainAs(textMain) {
-                    start.linkTo(parent.start)
-                    end.linkTo(parent.end)
-                    top.linkTo(parent.top)
-                    bottom.linkTo(parent.bottom)
-                },
+            modifier =
+                Modifier
+                    .padding(bottom = 128.dp)
+                    .constrainAs(textMain) {
+                        start.linkTo(parent.start)
+                        end.linkTo(parent.end)
+                        top.linkTo(parent.top)
+                        bottom.linkTo(parent.bottom)
+                    },
             text = "Compose Weather",
             color = MaterialTheme.colors.textSecondary,
             fontSize = 32.sp,
-            fontFamily = lombokFontFamily
+            fontFamily = lombokFontFamily,
         )
 
         WavesBackground(seasonColorsData.wavePrimary)
@@ -75,12 +78,12 @@ fun SplashScreen(alpha: Float = 1f) {
 @Preview(
     showBackground = true,
     name = "Light mode",
-    uiMode = Configuration.UI_MODE_NIGHT_NO
+    uiMode = Configuration.UI_MODE_NIGHT_NO,
 )
 @Preview(
     showBackground = true,
     name = "Night mode",
-    uiMode = Configuration.UI_MODE_NIGHT_YES
+    uiMode = Configuration.UI_MODE_NIGHT_YES,
 )
 @Composable
 fun SplashPreview() {

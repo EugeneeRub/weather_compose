@@ -10,9 +10,10 @@ import java.text.DecimalFormat
  */
 fun Double.kelvinToTemperatureType(type: Int): String {
     val resultFormat = DecimalFormat("##")
-    val result = when (TemperatureType.getTemperatureTypeByInt(type)) {
-        TemperatureType.Celsius -> (this - 273.15)
-        TemperatureType.Fahrenheit -> 1.8 * (this - 273.15) + 32
-    }
+    val result =
+        when (TemperatureType.getTemperatureTypeByInt(type)) {
+            TemperatureType.Celsius -> (this - 273.15)
+            TemperatureType.Fahrenheit -> 1.8 * (this - 273.15) + 32
+        }
     return resultFormat.format(result)
 }

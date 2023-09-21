@@ -37,7 +37,7 @@ data class TodayWeatherModel(
      *
      * Example: 16 -> 16°;
      */
-    fun getTemperatureFeelsLikeString() = "${tempFeelsLike}°"
+    fun getTemperatureFeelsLikeString() = "$tempFeelsLike°"
 }
 
 /**
@@ -62,7 +62,6 @@ data class DetailsModel(
     val sunset: Long,
     val visibility: Visibility,
 ) {
-
     /**
      * Combine [tempMin] and [tempMax] to return new string.
      *
@@ -71,13 +70,15 @@ data class DetailsModel(
     fun getMinMaxTemperatureString() = "$tempMin°/$tempMax°"
 
     /** Returns sunrise time string in HH:mm format. */
-    fun getSunriseTime(): String = SimpleDateFormat("HH:mm").format(Date(sunrise))
+    fun getSunriseTime(): String = SimpleDateFormat("HH:mm", Locale.getDefault()).format(Date(sunrise * 1000))
 
     /** Returns sunset time string in HH:mm format. */
-    fun getSunsetTime(): String = SimpleDateFormat("HH:mm").format(Date(sunset))
+    fun getSunsetTime(): String = SimpleDateFormat("HH:mm", Locale.getDefault()).format(Date(sunset * 1000))
 
     /** Represents types of weather visibility, holds [stringId] to show it in UI. */
-    enum class Visibility(@StringRes val stringId: Int) {
+    enum class Visibility(
+        @StringRes val stringId: Int,
+    ) {
         DENSE_FOG(R.string.terminology_dense_fog),
         THICK_FOG(R.string.terminology_thick_fog),
         MODERATE_FOG(R.string.terminology_moderate_fog),
@@ -86,22 +87,23 @@ data class DetailsModel(
         LIGHT_MIST(R.string.terminology_light_mist),
         VERY_LIGHT_MIST(R.string.terminology_very_light_mist),
         CLEAR_AIR(R.string.terminology_clear_air),
-        VERY_CLEAR_AIR(R.string.terminology_very_clear_air);
+        VERY_CLEAR_AIR(R.string.terminology_very_clear_air),
+        ;
 
         companion object {
             /** Returns [Visibility] depends on the provided [visibilityValue].  */
-            fun getVisibility(visibilityValue: Int) = when (visibilityValue) {
-                in 0..50 -> DENSE_FOG
-                in 51..200 -> THICK_FOG
-                in 201..770 -> MODERATE_FOG
-                in 771..1000 -> LIGHT_FOG
-                in 1001..2000 -> VERY_LIGHT_FOG
-                in 2001..2800 -> LIGHT_MIST
-                in 2801..10_000 -> VERY_LIGHT_MIST
-                in 10_001..23_000 -> CLEAR_AIR
-                else -> VERY_CLEAR_AIR
-            }
+            fun getVisibility(visibilityValue: Int) =
+                when (visibilityValue) {
+                    in 0..50 -> DENSE_FOG
+                    in 51..200 -> THICK_FOG
+                    in 201..770 -> MODERATE_FOG
+                    in 771..1000 -> LIGHT_FOG
+                    in 1001..2000 -> VERY_LIGHT_FOG
+                    in 2001..2800 -> LIGHT_MIST
+                    in 2801..10_000 -> VERY_LIGHT_MIST
+                    in 10_001..23_000 -> CLEAR_AIR
+                    else -> VERY_CLEAR_AIR
+                }
         }
     }
 }
-

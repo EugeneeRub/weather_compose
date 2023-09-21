@@ -11,21 +11,21 @@ import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
-import com.erubezhin.weather_sample_app.feature.ui.theme.SeasonColors
 import com.erubezhin.weather_sample_app.R
+import com.erubezhin.weather_sample_app.feature.ui.theme.SeasonColors
 
 @Composable
 fun WavesBackground(waveColor: Color) {
     Box(
         modifier = Modifier.fillMaxSize(),
-        contentAlignment = Alignment.BottomCenter
+        contentAlignment = Alignment.BottomCenter,
     ) {
         Image(
             painter = painterResource(id = R.drawable.background_wave),
             contentDescription = "Background wave",
             modifier = Modifier.fillMaxSize(),
             contentScale = ContentScale.Crop,
-            colorFilter = ColorFilter.tint(waveColor)
+            colorFilter = ColorFilter.tint(waveColor),
         )
     }
 }

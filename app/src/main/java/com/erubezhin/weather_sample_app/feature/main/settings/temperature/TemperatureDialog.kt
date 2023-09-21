@@ -17,23 +17,24 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.appsflyer.AppsFlyerLib
+import com.erubezhin.weather_sample_app.R
 import com.erubezhin.weather_sample_app.core.extension.Dialogs
 import com.erubezhin.weather_sample_app.core.extension.logDialogOpen
 import com.erubezhin.weather_sample_app.data.model.main.settings.TemperatureType
 import com.erubezhin.weather_sample_app.data.model.main.settings.temperature.TemperatureModel
 import com.erubezhin.weather_sample_app.feature.ui.theme.*
 import java.util.*
-import com.erubezhin.weather_sample_app.R
 
 @ExperimentalMaterialApi
 @Composable
 fun TemperatureDialog(
     isShowDialog: Boolean,
-    viewModel: TemperatureViewModel = viewModel(
-        factory = TemperatureViewModel.factory(LocalContext.current.applicationContext),
+    viewModel: TemperatureViewModel =
+        viewModel(
+            factory = TemperatureViewModel.factory(LocalContext.current.applicationContext),
         ),
     setShowDialog: (Boolean) -> Unit,
-    onTemperatureSelected: (TemperatureType) -> Unit
+    onTemperatureSelected: (TemperatureType) -> Unit,
 ) {
     if (isShowDialog) {
         AppsFlyerLib.getInstance().logDialogOpen(LocalContext.current, Dialogs.Temperature)
@@ -42,25 +43,26 @@ fun TemperatureDialog(
         Dialog(
             onDismissRequest = {
                 setShowDialog(false)
-            }
+            },
         ) {
             Surface(
                 shape = RoundedCornerShape(12.dp),
                 color = MaterialTheme.colors.background,
             ) {
                 Column(
-                    modifier = Modifier
-                        .padding(24.dp),
+                    modifier =
+                        Modifier
+                            .padding(24.dp),
                     horizontalAlignment = Alignment.CenterHorizontally,
                 ) {
                     Text(
                         stringResource(id = R.string.choose_temperature),
                         modifier = Modifier.padding(bottom = 8.dp),
                         color = MaterialTheme.colors.textPrimary,
-                        fontFamily = moonFontFamily
+                        fontFamily = moonFontFamily,
                     )
                     Row(
-                        horizontalArrangement = Arrangement.SpaceEvenly
+                        horizontalArrangement = Arrangement.SpaceEvenly,
                     ) {
                         viewModel.temperatures.observeAsState().value?.forEach { item ->
                             TemperatureDialogItem(seasonColors, item) {
@@ -89,18 +91,19 @@ fun TemperatureDialogItem(
         backgroundColor = MaterialTheme.colors.viewSelected,
         elevation = 0.dp,
         shape = RoundedCornerShape(8.dp),
-        modifier = Modifier
-            .size(64.dp)
-            .padding(8.dp),
+        modifier =
+            Modifier
+                .size(64.dp)
+                .padding(8.dp),
         onClick = {
             onClick(model.temperature)
-        }
+        },
     ) {
         Image(
             painter = painterResource(id = model.temperature.icon),
             contentDescription = "Temperature type icon",
             colorFilter = ColorFilter.tint(tintColor),
-            modifier = Modifier.padding(8.dp)
+            modifier = Modifier.padding(8.dp),
         )
     }
 }

@@ -9,10 +9,11 @@ sealed class TemperatureType(val type: Int, val icon: Int) {
 
     companion object {
         /** Via the provided [type] value returns required [TemperatureType]. */
-        fun getTemperatureTypeByInt(type: Int): TemperatureType = when (type) {
-            Celsius.type -> Celsius
-            Fahrenheit.type -> Fahrenheit
-            else -> Celsius
-        }
+        fun getTemperatureTypeByInt(type: Int): TemperatureType =
+            when (type) {
+                Celsius.type -> Celsius
+                Fahrenheit.type -> Fahrenheit
+                else -> Celsius
+            }
     }
 }

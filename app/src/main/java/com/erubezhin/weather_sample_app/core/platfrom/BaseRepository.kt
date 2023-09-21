@@ -4,7 +4,6 @@ import retrofit2.Call
 import java.lang.Exception
 
 open class BaseRepository {
-
     protected fun <T> request(call: Call<T>): Response<T> {
         return try {
             val response = call.execute()
@@ -20,5 +19,6 @@ open class BaseRepository {
 
 sealed class Response<out T> {
     data class Result<T>(val result: T) : Response<T>()
+
     data class Error<T>(val throwable: Throwable) : Response<T>()
 }

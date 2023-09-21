@@ -3,7 +3,7 @@ package com.erubezhin.weather_sample_app.data.model.response
 import com.google.gson.annotations.SerializedName
 
 data class HourlyResponse(
-    @SerializedName("list") val weather: List<HourModel>
+    @SerializedName("list") val weather: List<HourModel>,
 )
 
 data class HourModel(

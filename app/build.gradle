@@ -23,7 +23,7 @@ android {
 
         // Config fields
         buildConfigField "String", "BASE_API_PATH", BASE_API_PATH
-        buildConfigField "String", "PREFS_STORAGE_KEY", PREFS_STORAGE_KEY
+        buildConfigField "String", "PREFS_STORAGE_KEY", props.getProperty("PREFS_STORAGE_KEY")
         buildConfigField "String", "API_KEY", props.getProperty("API_KEY")
         buildConfigField "String", "APPSFLYER_KEY", props.getProperty("APPSFLYER_KEY")
     }

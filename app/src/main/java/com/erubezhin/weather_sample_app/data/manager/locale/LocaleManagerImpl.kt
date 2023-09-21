@@ -9,23 +9,27 @@ import com.erubezhin.weather_sample_app.data.model.main.settings.Language
 import java.util.*
 
 // TODO - In future should be used via DI.
+
 /**
  * Implementation of the [LocaleManager].
  *
  * @param context provides access to the resources.
  */
-class LocaleManagerImpl(context: Context): LocaleManager {
-    private val prefs: SharedPreferences = context
-        .getSharedPreferences(BuildConfig.PREFS_STORAGE_KEY, Context.MODE_PRIVATE)
+class LocaleManagerImpl(context: Context) : LocaleManager {
+    private val prefs: SharedPreferences =
+        context
+            .getSharedPreferences(BuildConfig.PREFS_STORAGE_KEY, Context.MODE_PRIVATE)
 
-    override fun getLanguageCode(): String =
-        prefs.getString(KEY_LANGUAGE, Language.English.code)!!
+    override fun getLanguageCode(): String = prefs.getString(KEY_LANGUAGE, Language.English.code)!!
 
     override fun setLanguageCode(code: String) {
         prefs.edit().putString(KEY_LANGUAGE, code).apply()
     }
 
-    override fun updateContextLocale(context: Context, language: Language) {
+    override fun updateContextLocale(
+        context: Context,
+        language: Language,
+    ) {
         val locale = Locale(language.code)
         Locale.setDefault(locale)
         val resources: Resources = context.resources

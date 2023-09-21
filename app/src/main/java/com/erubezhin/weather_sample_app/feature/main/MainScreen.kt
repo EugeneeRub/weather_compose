@@ -23,11 +23,12 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.google.accompanist.pager.ExperimentalPagerApi
-import com.erubezhin.weather_sample_app.feature.main.todayweather.TodayWeatherScreen
+import com.erubezhin.weather_sample_app.feature.main.hourlyweather.HourlyWeatherScreen
 import com.erubezhin.weather_sample_app.feature.main.settings.SettingsScreen
-import com.erubezhin.weather_sample_app.feature.ui.theme.WeatherComposeTheme
+import com.erubezhin.weather_sample_app.feature.main.todayweather.TodayWeatherScreen
 import com.erubezhin.weather_sample_app.feature.ui.theme.SeasonColors
+import com.erubezhin.weather_sample_app.feature.ui.theme.WeatherComposeTheme
+import com.google.accompanist.pager.ExperimentalPagerApi
 import kotlinx.coroutines.launch
 import java.util.*
 
@@ -35,9 +36,10 @@ import java.util.*
 @ExperimentalMaterialApi
 @Composable
 fun MainScreen(
-    viewModel: MainViewModel = viewModel(
-        factory = MainViewModel.factory(LocalContext.current.applicationContext),
-    )
+    viewModel: MainViewModel =
+        viewModel(
+            factory = MainViewModel.factory(LocalContext.current.applicationContext),
+        ),
 ) {
     val context = LocalContext.current
     LaunchedEffect(key1 = true) { viewModel.prepareLocale(context) }
@@ -55,7 +57,7 @@ fun MainScreen(
 @ExperimentalMaterialApi
 private fun SetupDrawerMenu(
     navController: NavHostController,
-    content: @Composable (DrawerState) -> Unit
+    content: @Composable (DrawerState) -> Unit,
 ) {
     val seasonColorsData = remember { SeasonColors.getSeasonColors(Calendar.getInstance()) }
 
@@ -74,7 +76,7 @@ private fun SetupDrawerMenu(
             gesturesEnabled = drawerState.isOpen,
             drawerBackgroundColor = MaterialTheme.colors.background,
             drawerElevation = 0.dp,
-            drawerContent = { WeatherDrawer(navController = navController) }
+            drawerContent = { WeatherDrawer(navController = navController) },
         ) {
             content(drawerState)
             Card(
@@ -85,15 +87,16 @@ private fun SetupDrawerMenu(
                     scope.launch {
                         drawerState.open()
                     }
-                }
+                },
             ) {
                 Icon(
                     Icons.Rounded.Menu,
                     tint = Color.White,
                     contentDescription = "Burger icon",
-                    modifier = Modifier
-                        .padding(12.dp)
-                        .size(28.dp)
+                    modifier =
+                        Modifier
+                            .padding(12.dp)
+                            .size(28.dp),
                 )
             }
         }
@@ -107,7 +110,10 @@ private fun SetupDrawerMenu(
 @ExperimentalPagerApi
 @ExperimentalMaterialApi
 @Composable
-private fun Navigation(navController: NavHostController, drawerState: DrawerState) {
+private fun Navigation(
+    navController: NavHostController,
+    drawerState: DrawerState,
+) {
     val scope = rememberCoroutineScope()
 
     val closeDrawer = {
@@ -123,7 +129,7 @@ private fun Navigation(navController: NavHostController, drawerState: DrawerStat
         }
         composable(NavDrawerItem.HourlyWeather.route) {
             closeDrawer()
-            Text("In Development")
+            HourlyWeatherScreen()
         }
         composable(NavDrawerItem.Settings.route) {
             closeDrawer()
@@ -131,4 +137,3 @@ private fun Navigation(navController: NavHostController, drawerState: DrawerStat
         }
     }
 }
-

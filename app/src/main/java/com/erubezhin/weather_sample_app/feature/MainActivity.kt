@@ -9,13 +9,13 @@ import androidx.compose.runtime.remember
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.google.accompanist.pager.ExperimentalPagerApi
 import com.erubezhin.weather_sample_app.feature.Screen.*
 import com.erubezhin.weather_sample_app.feature.main.MainScreen
 import com.erubezhin.weather_sample_app.feature.splash.AnimatedSplashScreen
 import com.erubezhin.weather_sample_app.feature.ui.theme.NavigationBarColorApplier
 import com.erubezhin.weather_sample_app.feature.ui.theme.SeasonColors
 import com.erubezhin.weather_sample_app.feature.ui.theme.WeatherComposeTheme
+import com.google.accompanist.pager.ExperimentalPagerApi
 import java.util.*
 
 @ExperimentalPagerApi
@@ -39,7 +39,8 @@ fun Navigation() {
     WeatherComposeTheme {
         NavigationBarColorApplier(seasonColorsData.wavePrimary)
         NavHost(
-            navController = navController, startDestination = Splash.path
+            navController = navController,
+            startDestination = Splash.path,
         ) {
             composable(Splash.path) { AnimatedSplashScreen(navController) }
             composable(Main.path) { MainScreen() }
@@ -49,5 +50,6 @@ fun Navigation() {
 
 /** Enum that holds navigation paths. */
 enum class Screen(val path: String) {
-    Splash("splash_screen"), Main("main_screen")
+    Splash("splash_screen"),
+    Main("main_screen"),
 }
